@@ -58,8 +58,14 @@ Map::Map(string src){ //Map map("test");
                 edg[result[1]].A = pnt[result[2]];
                 edg[result[1]].B = pnt[result[3]];
                 edg[result[1]].type = result[4];
-                edg[result[1]].F1 = result[5];
-                edg[result[1]].F2 = result[6];
+                if(!(result[5] >= 0 && result[5] < nbFace))
+                    edg[result[1]].F1 = -1;
+                else
+                    edg[result[1]].F1 = result[5];
+                if(!(result[6] >= 0 && result[6] < nbFace))
+                    edg[result[1]].F1 = -1;
+                else
+                    edg[result[1]].F1 = result[6];
                 break;
                 
             case 'F':
@@ -82,52 +88,34 @@ Map::~Map(){
     delete [] fac; //On supprime, nous Peillon déjà trop cher pour ca
 }
 
-float Map::findWall(Player player, float angle){
-    float dist; //Distance au mur
-    
+float Map::findWall(Player player, float angle){  
     //On lance le rayon et on passe de face en face jusqu'à ce que l'on se cogne contre un mur
     bool bang_le_mur = false;
-    //On lance le rayon vers l'infini et au delà (donc très loin) pour être certain de sortir de la face
-    //Ainsi on peut détécter l'arête que va traverser le rayon
-    Point p;
-    p.x = player.pos.x + INFINITE*cos(angle);
-    p.y = player.pos.y + INFINITE*sin(angle);
-    
-    Face f = player.face; //Face courante, voire sprintante
+    Point p; //Point courant
+    p.x = player.pos.x;
+    p.y = player.pos.y; 
+    Face f = player.face; //Face sprintante
     Edge e; //Elle aussi va très vite et ne s'arête pas là
-    do {
-        break;
-        if(f.E1.sameSide(player.pos, p))
+    for(int i = 0; i < 2000; i++){
+        p.x += PAS_RAYCAST*cos(angle);
+        p.y += PAS_RAYCAST*sin(angle);
+        if(!f.E1.sameSide(player.pos, p))
             e = f.E1;
-        if(f.E2.sameSide(player.pos, p))
+        else if(!f.E2.sameSide(player.pos, p))
             e = f.E2;
-        else
-            e = f.E3;
+        else if(!f.E3.sameSide(player.pos, p))
+            e = f.E2;
+        else //Sinon on ne traverse pas d'arrête
+            continue;
         
         //Si il n'y a rien, on avance, sinon c'est un mur
         if(e.type == 0){
-            //f = (f == e.F1)?e.F2:e.F1;
+            f = (f == fac[e.F1])?fac[e.F2]:fac[e.F1];
             continue;
         }
-        else{
-            bang_le_mur = true; //Aïe ca fait mal
-            /*Raaaaah la géométrie
-            On a deux droites (rayon et arête) qui s'intersectent en un point X,Y qu'il faut trouver
-            Les deux droites on pour équations paramétriques:
-            (X = a*cos(angle)+player.pos.x
-            (Y = a*sin(angle)+player.pos.y
-            et   
-            (X = b*(x2-x1)+x1
-            (Y = b*(y2-y1)+y1
-            Maintenant vous avez foi dans mes compétences en géométrie*/
-            float xp = player.pos.x, yp = player.pos.y, x1 = e.A.x, y1 = e.A.y, x2 = e.B.x, y2 = e.B.y;
-            float x = -(cos(angle)*(-x1*y2+y1*x2+yp*(x1-x2))+sin(angle)*xp*(x2-x1))/(cos(angle)*(y2-y1)+sin(angle)*(x1-x2));
-            float y = -(sin(angle)*(-x1*y2+y1*x2+xp*(y2-y1))+cos(angle)*yp*(y1-y2))/(cos(angle)*(y2-y1)+sin(angle)*(x1-x2));
-            //On peut le faire en utilisant le point à l'infini mais l'expression est encore plus illisible
-            dist = sqrt((xp-x)*(xp-x)+(yp-y)*(yp-y));
-        }
-    } while(!bang_le_mur);
-    
-    return 5;
+        else
+            return (p-player.pos).norm();
+    }
+    return INFINITE;
 }
 //--------------------------------------------------------------------//

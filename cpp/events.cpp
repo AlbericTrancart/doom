@@ -42,6 +42,12 @@ void handleEvent(int& endgame, Player& player,Map& map){
 		case KEY_DOWN:
 			player.move_down(map);
 			break;
+        case 'A':
+            player.turn_left();
+            break;
+        case 'E':
+            player.turn_right();
+            break;
 
             }
         }
