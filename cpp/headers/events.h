@@ -5,5 +5,5 @@ using namespace Imagine;
 #include "constants.h"
 #include "player.h"
 
-int input();
-void handleEvent(int& endgame, Player& player);
+//int input(); // ?
+void handleEvent(int& endgame, Player& player, Map& map);
