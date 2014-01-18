@@ -1,7 +1,7 @@
 #include "headers/events.h" 
 
 //Gère toutes les combinaisons de touches possibles
-void handleEvent(int& endgame, Player& player){
+void handleEvent(int& endgame, Player& player,Map& map){
     
     Event e;
     int key;
@@ -27,22 +27,21 @@ void handleEvent(int& endgame, Player& player){
                         endgame = 3;
                     break;
 
-				case KEY_UP:
-					player.move_up(); //Inclure les restrictions par la suite pour qu'il ne traverse pas les murs,
-										//ne sorte pas de la map...
-					break;
+		case KEY_UP:
+			player.move_up(map);
+			break;
 
-				case KEY_LEFT:
-					player.move_left(); //idem
-					break;
+		case KEY_LEFT:
+			player.move_left(map);
+			break;
 
-				case KEY_RIGHT:
-					player.move_right();
-					break;
+		case KEY_RIGHT:
+			player.move_right(map);
+			break;
 
-				case KEY_DOWN:
-					player.move_down();
-					break;
+		case KEY_DOWN:
+			player.move_down(map);
+			break;
 
             }
         }
