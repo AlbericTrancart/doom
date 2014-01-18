@@ -58,6 +58,8 @@ Map::Map(string src){ //Map map("test");
                 edg[result[1]].A = pnt[result[2]];
                 edg[result[1]].B = pnt[result[3]];
                 edg[result[1]].type = result[4];
+                edg[result[1]].F1 = result[5];
+                edg[result[1]].F2 = result[6];
                 break;
                 
             case 'F':
