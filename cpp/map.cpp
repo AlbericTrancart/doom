@@ -96,6 +96,7 @@ float Map::findWall(Player player, float angle){
     Face f = player.face; //Face courante, voire sprintante
     Edge e; //Elle aussi va très vite et ne s'arête pas là
     do {
+        break;
         if(f.E1.sameSide(player.pos, p))
             e = f.E1;
         if(f.E2.sameSide(player.pos, p))

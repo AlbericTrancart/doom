@@ -16,22 +16,25 @@ void raycast(Image& img, Player player, Map& map){ //Remplit l'image avec le sol
     }
 }
 
-void minimap(Image& img, Player player, Map& map){
+void minimap(Player player, Map& map){
 
 	int w=W*A_MINIMAP/100;
 	int h=W*A_MINIMAP/100;
-
-	  for(int i = 0; i < w; ++i)
-	{
-        for(int j = 0; j < h; ++j)
-		{
-				img.set(i, j, FLOOR);
-		}
-	}
-
+    
+    fillRect(0, 0, w, h, WHITE);
+	drawLine(0, h, w, h, BLACK, 4);
+    drawLine(w, 0, w, h, BLACK, 4);
+    fillCircle(player.pos.x*w/map.w, player.pos.y*h/map.h, 3, BLUE);
+    drawLine(player.pos.x*w/map.w, player.pos.y*h/map.h, player.pos.x*w/map.w+int(INFINITE*cos(player.yaw)), player.pos.y*h/map.h+int(INFINITE*sin(player.yaw)), GREEN, 2);
+    for(int i = 0; i < map.nbEdge; ++i){
+        if(map.edg[i].type == 1)
+            drawLine(map.edg[i].A.x*w/map.w, map.edg[i].A.y*h/map.h, map.edg[i].B.x*w/map.w, map.edg[i].B.y*h/map.h, RED, 2);
+        else
+            drawLine(map.edg[i].A.x*w/map.w, map.edg[i].A.y*h/map.h, map.edg[i].B.x*w/map.w, map.edg[i].B.y*h/map.h, BLACK, 1);
+    }
+                
 }
 
 void graphics(Image& img, Player player, Map& map){
     raycast(img, player, map);
-    minimap(img, player, map);
 }

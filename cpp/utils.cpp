@@ -108,10 +108,19 @@ bool Face::isInFace(Point p){
 
 void Face::loadPoints(){
     //On va chercher les arêtes et les points correspondants et on les ordonne
-    Point p2 = E1.A, p3 = E1.B;
-    P1 = (E2.A == p2 || E2.A == p3)?E2.B:E2.A; //x=(test)?1:2 <-> if(test) {x=1;} else {x=2;}
-    P2 = (p2 == E2.A || p2 == E2.B)?p3:p2;
-    P3 = (p3 == E3.A || p3 == E3.B)?p2:p3;
+    Point p2 = E1.A, p3 = E1.B; //p2 et p3 appartiennent à E1
+    if(p3 == E2.A || p3 == E2.B) //Si p3 appartient à E2
+        P3 = p3; //Alors p3 est opposé à E3
+    else //Sinon p3 n'appartient pas à E2 donc est opposé à E2
+        P2 = p3;
+    
+    if(p2 == E3.A || p2 == E3.B) //Si p2 appartient à E3
+        P2 = p2; //Alors p2 est opposé à E2
+    else //Sinon p2 n'appartient pas à E3 donc est opposé à E3
+        P3 = p2;
+    
+    //P1 est donc le dernier point
+    P1=(E2.A != p2 || E2.A != p3)?E2.A:E2.B; //x=(test)?1:2 <-> if(test) {x=1;} else {x=2;}
 }
 
 bool operator==(Face a, Face b)

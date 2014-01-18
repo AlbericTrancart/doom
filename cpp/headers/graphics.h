@@ -4,3 +4,4 @@
 #include "map.h"
 
 void graphics(Image& img, Player player, Map& map);
+void minimap(Player player, Map& map);

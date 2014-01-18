@@ -14,11 +14,16 @@ int main(){
     Image ecran;
     Map map("test"); 
 	Player player(map);
-    
+
     while(endgame != 1){
         handleEvent(endgame, player, map);
         graphics(ecran, player, map);
+        
+        noRefreshBegin();
         ecran.display();
+        minimap(player, map); //A n'utiliser qu'à des fins de debug
+        noRefreshEnd();
+        
         milliSleep(30);
     }
     
