@@ -1,12 +1,57 @@
 #include "headers/events.h" 
 
+void event_move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bool key_s)
+{
+	/*if(key_z) {player.move_up(map);}
+	if(key_q) {player.move_left(map);}
+	if(key_d) {player.move_right(map);}
+	if(key_s) {player.move_down(map);}
+
+	return;*/ //Semble plus simple. Mais on appelle des fonctions inutilement. Quand il y a Z et S enfoncées on appelle move_down et move_up pour ne rien faire.
+			  //La proposition qui suit me paraît donc plus compliquée mais plus rapide.
+
+	//1 touche est appuyée
+	if(key_z && !key_q && !key_d && !key_s){player.move_up(map); return;}
+	if(!key_z && key_q && !key_d && !key_s){player.move_left(map); return;}
+	if(!key_z && !key_q && key_d && !key_s){player.move_right(map); return;}
+	if(!key_z && !key_q && !key_d && key_s){player.move_down(map); return;}
+	//------------------
+	//2 touches sont appuyées
+	if(key_z && key_q && !key_d && !key_s){player.move_up(map);player.move_left(map);return;}
+	if(key_z && !key_q && key_d && !key_s){player.move_up(map);player.move_right(map);return;}
+	if(key_z && !key_q && !key_d && key_s){return;}
+	if(!key_z && key_q && key_d && !key_s){return;}
+	if(!key_z && key_q && !key_d && key_s){player.move_down(map);player.move_left(map);return;}
+	if(!key_z && !key_q && key_d && key_s){player.move_down(map);player.move_right(map);return;}
+	//------------------
+	//3 touches sont appuyées
+	if(key_z && key_q && key_d && !key_s){player.move_up(map); return;}
+	if(key_z && !key_q && key_d && key_s){player.move_right(map); return;}
+	if(key_z && key_q && !key_d && key_s){player.move_left(map); return;}
+	if(!key_z && key_q && key_d && key_s){player.move_down(map); return;}
+	//------------------
+	//4 touches sont appuyées
+	if(key_z && key_q && key_d && key_s){return;}
+	//------------------
+
+	return; //Aucune touche n'est appuyée
+
+}
+
 //Gère toutes les combinaisons de touches possibles
 void handleEvent(int& endgame, Player& player,Map& map){
     
     Event e;
     int key;
+
+	bool key_z=false; //Si Z est appuyé, key_z passe à true
+	bool key_d=false; //Si D est appuyé, key_d passe à true
+	bool key_s=false; //Si S est appuyé, key_s passe à true
+	bool key_q=false; //Si Q est appuyé, key_q passe à true
+
     do{
         getEvent(0,e);
+		cout << "key_z=" << key_z << endl << "key_q=" << key_q << endl << "key_d=" << key_d << endl << "key_s=" << key_s << endl << endl;
         if(e.type == EVT_KEY_ON){
             switch(e.key){
                 case KEY_ESCAPE:
@@ -27,27 +72,28 @@ void handleEvent(int& endgame, Player& player,Map& map){
                         endgame = 3;
                     break;
 
-		case 'Z':
-			player.move_up(map);
-			break;
+				case 'Z':
+					key_z=true;
+					event_move(player, map, key_z, key_q, key_d, key_s);
 
-		case 'Q':
-			player.move_left(map);
-			break;
+				case 'Q':
+					key_q=true;
+					event_move(player, map, key_z, key_q, key_d, key_s);
 
-		case 'D':
-			player.move_right(map);
-			break;
+				case 'D':
+					key_d=true;
+					event_move(player, map, key_z, key_q, key_d, key_s);
 
-		case 'S':
-			player.move_down(map);
-			break;
-        case 'A':
-            player.turn_left();
-            break;
-        case 'E':
-            player.turn_right();
-            break;
+				case 'S':
+					key_s=true;
+					event_move(player, map, key_z, key_q, key_d, key_s);
+
+				case 'A':
+					player.turn_left();
+					break;
+				case 'E':
+					player.turn_right();
+					break;
 
             }
         }
@@ -61,6 +107,25 @@ void handleEvent(int& endgame, Player& player,Map& map){
                 case KEY_F4:
                     endgame = 0;
                     break;
+
+				case 'Z':
+					key_z=false;
+					break;
+
+				case 'Q':
+					key_q=false;
+					break;
+
+
+				case 'D':
+					key_d=false;
+					break;
+
+
+				case 'S':
+					key_s=false;
+					break;
+
             }
         }
 
