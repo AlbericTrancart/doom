@@ -8,7 +8,7 @@ Player::Player(Map& map) //Constructeur
 {
     pos.x=map.w/2;
     pos.y=map.h/2;
-    yaw=0*3.1415/180;
+    yaw=-3.1415/2;
     health=100;
     face=map.fac[what_face(map)];
 }
