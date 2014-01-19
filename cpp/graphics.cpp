@@ -3,15 +3,15 @@
 void raycast(Image& img, Player player, Map& map){ //Remplit l'image avec le sol et les murs
     float angle;
     float height; //Hauteur du mur
-    for(int j = 0; j < W; j++){ //On parcoure les colonnes de pixel
+    for(int j = 0; j < W; ++j){ //On parcoure les colonnes de pixel
         angle = player.yaw+FOV*j/W-FOV/2;
         height = H_WALLS/map.findWall(player, angle);
         
-        for(int i = 0; i < max(0, int(H/2-height/2)); i++)
+        for(int i = 0; i < max(0, int(H/2-height/2)); ++i)
             img.set(i, j, SKY);
-        for(int i = max(0, int(H/2-height/2)); i < min(int(H/2+height/2), H); i++)
+        for(int i = max(0, int(H/2-height/2)); i < min(int(H/2+height/2), H); ++i)
             img.set(i, j, WALL);
-        for(int i = min(int(H/2+height/2), H); i < H; i++)
+        for(int i = min(int(H/2+height/2), H); i < H; ++i)
             img.set(i, j, FLOOR);
     }
 }
