@@ -13,4 +13,3 @@ ImagineAddExecutable(doom
 						hud.cpp			headers/hud.h
 						map.cpp			headers/map.h)
 ImagineUseModules(doom Graphics)
-ImagineUseModules(doom Graphics)
