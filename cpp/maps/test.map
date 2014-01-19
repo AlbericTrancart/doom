@@ -1,15 +1,15 @@
 //Se referer a map.h pour avoir la structure de ce fichier
-M 500 500 7 14 8
+M 50 50 7 14 8
 
 
 P 0 0 0
-P 1 0 500
-P 2 500 0
-P 3 500 500
+P 1 0 50
+P 2 50 0
+P 3 50 50
 
-P 4 100 200
-P 5 300 200
-P 6 300 400
+P 4 10 20
+P 5 30 20
+P 6 30 40
 
 
 A 0 0 2 1 0 -1
