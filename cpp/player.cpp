@@ -10,6 +10,8 @@ Player::Player(Map& map) //Constructeur
     pos.y=map.h/2;
     yaw=-3.1415/2;
     health=100;
+    weapon=0;
+    weapon_state = 0;
     face=map.fac[what_face(map)];
 }
 
@@ -17,7 +19,6 @@ Player::Player(Map& map) //Constructeur
 
 
 //--------------------------------------------------------------------//
-
 void Player::test_and_move(Point nextpos, Map& map) //Teste si le déplacement est possible dans la map, et l'effectue si c'est le cas
 {
     /*"Le point où le joueur est et celui où il s'apprête à aller sont-ils sur la même face?" equivalent à "Le point où le

@@ -11,6 +11,7 @@ public:
     Point pos;
     float yaw; //Angle que fait le joueur par rapport à l'axe des x
     int health;
+    int weapon, weapon_state; //Quelle arme le joueur utilise et l'avancement du tir
     Face face;
 
     Player(Map& map); //Construit le joueur dans la map indiquée

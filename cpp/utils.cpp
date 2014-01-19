@@ -16,7 +16,7 @@ Point::Point() //constructeur vide
 
 
 //--------------------------------------------------------------------//
-Point Point::operator+(Point Q) //op�rateur +
+Point Point::operator+(Point Q) //op?rateur +
 {
 	Point S;
 	S.x=x+Q.x;
@@ -29,7 +29,7 @@ float Point::operator*(Point Q) //produit scalaire
 	return x*Q.x+y*Q.y;
 }
 
-Point Point::operator-(Point Q) //op�rateur -
+Point Point::operator-(Point Q) //op?rateur -
 {
 	Point S;
 	S.x=x-Q.x;
@@ -76,8 +76,8 @@ bool operator!=(Point a, Point b)
 //***CLASS EDGE***//
 //--------------------------------------------------------------------//
 bool Edge::sameSide(Point a, Point b){
-    //Soit la droite form�e par les deux points extremes de l'ar�te
-    //On d�termine l'�quation de la droite pour savoir si les points sont "en dessous" ou "au dessus"
+    //Soit la droite form?e par les deux points extremes de l'ar?te
+    //On d?termine l'?quation de la droite pour savoir si les points sont "en dessous" ou "au dessus"
     bool test1, test2;
     if(A.x != B.x){
         test1 = (a.y <= (a.x-A.x)*(B.y-A.y)/(B.x-A.x)+A.y);
@@ -107,16 +107,16 @@ bool Face::isInFace(Point p){
 }
 
 void Face::loadPoints(){
-    //On va chercher les ar�tes et les points correspondants et on les ordonne
-    Point p2 = E1.A, p3 = E1.B; //p2 et p3 appartiennent � E1
-    if(p3 == E2.A || p3 == E2.B) //Si p3 appartient � E2
-        P3 = p3; //Alors p3 est oppos� � E3
-    else //Sinon p3 n'appartient pas � E2 donc est oppos� � E2
+    //On va chercher les ar?tes et les points correspondants et on les ordonne
+    Point p2 = E1.A, p3 = E1.B; //p2 et p3 appartiennent ? E1
+    if(p3 == E2.A || p3 == E2.B) //Si p3 appartient ? E2
+        P3 = p3; //Alors p3 est oppos? ? E3
+    else //Sinon p3 n'appartient pas ? E2 donc est oppos? ? E2
         P2 = p3;
     
-    if(p2 == E3.A || p2 == E3.B) //Si p2 appartient � E3
-        P2 = p2; //Alors p2 est oppos� � E2
-    else //Sinon p2 n'appartient pas � E3 donc est oppos� � E3
+    if(p2 == E3.A || p2 == E3.B) //Si p2 appartient ? E3
+        P2 = p2; //Alors p2 est oppos? ? E2
+    else //Sinon p2 n'appartient pas ? E3 donc est oppos? ? E3
         P3 = p2;
     
     //P1 est donc le dernier point
@@ -129,7 +129,7 @@ void Face::loadPoints(){
 
 bool operator==(Face a, Face b)
 {
-    return (a.E1 == b.E1 && a.E2 == b.E2); //Il suffit qu'il y ait deux ar�tes en commun pour avoir l'�galit�
+    return (a.E1 == b.E1 && a.E2 == b.E2); //Il suffit qu'il y ait deux ar?tes en commun pour avoir l'?galit?
 }
 
 bool operator!=(Face a, Face b)
@@ -147,9 +147,9 @@ Image::Image(){
         cols[i] = WHITE;
 }
 
-//Charge les images � partir de fichiers
+//Charge les images ? partir de fichiers
 Image::Image(string src){
-    loadColorImage(src, cols, w, h);
+    loadColorImage("images/"+src, cols, w, h);
 }
 
 //Removed Herobrine
@@ -159,12 +159,12 @@ Image::~Image(){
 
 //Obtenir un pixel
 Color Image::get(int x, int y){
-    return cols[y + x*W];
+    return cols[y + x*w];
 }
 
-//Donner une valeur � un pixel
+//Donner une valeur ? un pixel
 void Image::set(int x, int y, Color value){
-    cols[y + x*W] = value;
+    cols[y + x*w] = value;
 }
 
 //Afficher l'image
@@ -172,10 +172,10 @@ void Image::display(){
     putColorImage(0, 0, cols, w, h);
 }
 
-void Image::addSprite(Image& sprite, int x, int y){ //ecran.addSprite(sprite,x,y) points (x,y) point en haut � gauche du rectangle
-    for(int i = y; i < min(y+sprite.h, H); ++i)
-        for(int j = x; j < min(x+sprite.w, W); ++j)
-            if(sprite.get(i,j) != WHITE)
-                set(i, j, sprite.get(i, j));
+void Image::addSprite(Image& sprite, int x, int y){ //ecran.addSprite(sprite,x,y) points (x,y) point en haut ? gauche du rectangle
+    for(int i = 0; i < min(sprite.w, W-x); ++i)
+        for(int j = 0; j < min(sprite.h, H-y); ++j)
+            if(sprite.get(j,i) != TRANSPARENT)
+                set(y+j, x+i, sprite.get(j, i));
 }
 //--------------------------------------------------------------------//

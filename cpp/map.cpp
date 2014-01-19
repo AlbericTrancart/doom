@@ -100,31 +100,27 @@ float Map::findWall(Player player, float angle){
 	//On doit alors voir le mur à l'autre bout de la map se rapprocher quand on avance.
         p.x = p.x + PAS_RAYCAST*cos(angle);
         p.y = p.y + PAS_RAYCAST*sin(angle);
-        if(!f.E1.sameSide(player.pos, p)) //S'il traverse l'arête E1, !sameSide passe à true true
-            e = f.E1;
-        else if(!f.E2.sameSide(player.pos, p))
-            e = f.E2;
-        else if(!f.E3.sameSide(player.pos, p))
-            e = f.E2;
-        else //Sinon on ne traverse pas d'arête
+        if(f.isInFace(p)) //Le point n'a pas changé de face
             continue;
-
+        
+        //Sinon on trouve quelle arête il a traversé
+        if(p.x < 0 || p.x > w || p.y < 0 || p.y > h) //Le point est sorti de la map
+            break;
+        
+        if((f.E1.F1 != -1 && fac[f.E1.F1].isInFace(p)) || (f.E1.F2 != -1 && fac[f.E1.F2].isInFace(p)))
+            e = f.E1;
+        else if((f.E2.F1 != -1 && fac[f.E2.F1].isInFace(p)) || (f.E2.F2 != -1 && fac[f.E2.F2].isInFace(p)))
+            e = f.E2;
+        else if((f.E3.F1 != -1 && fac[f.E3.F1].isInFace(p)) || (f.E3.F2 != -1 && fac[f.E3.F2].isInFace(p)))
+            e = f.E3;
+        
+        
         //Si il n'y a rien, on avance, sinon c'est un mur
         if(e.type == 0){
-            if(f.E1.F1 != -1 && fac[f.E1.F1].isInFace(p))
-                f = fac[f.E1.F1];
-            else if(f.E1.F2 != -1 && fac[f.E1.F2].isInFace(p))
-                f = fac[f.E1.F2];
-            else if(f.E2.F1 != -1 && fac[f.E2.F1].isInFace(p))
-                f = fac[f.E2.F1];
-            else if(f.E2.F2 != -1 && fac[f.E2.F2].isInFace(p))
-                f = fac[f.E2.F2];
-            else if(f.E3.F1 != -1 && fac[f.E3.F1].isInFace(p))
-                f = fac[f.E3.F1];
-            else if(f.E3.F2 != -1 && fac[f.E3.F2].isInFace(p))
-                f = fac[f.E3.F2];
-            else
-                break; //Le point n'est pas dans une face à proximité, il est en dehors de la map
+            if(e.F1 != -1 && fac[e.F1].isInFace(p))
+                f = fac[e.F1];
+            else if(e.F2 != -1 && fac[e.F2].isInFace(p))
+                f = fac[e.F2];
         }
         else
             break; //Si e est un mur, on s'arrête

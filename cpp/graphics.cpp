@@ -37,4 +37,5 @@ void minimap(Player player, Map& map){
 
 void graphics(Image& img, Player player, Map& map){
     raycast(img, player, map);
+    hud(img, player);
 }

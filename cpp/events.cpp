@@ -128,8 +128,21 @@ void handleEvent(int& endgame, Player& player,Map& map){
 
             }
         }
+        else if(e.type == EVT_BUT_ON){
+            if(player.weapon_state == 0)
+                ++player.weapon_state;
+        }
 
 		event_move(player, map, key_z, key_q, key_d, key_s);
+        
+        //Armes
+        if(player.weapon_state != 0) //Si le joueur est en train de tirer on continue de le faire tirer
+            ++player.weapon_state;
+        //Pour chaque arme on définit un temps de fin de tir
+        if(player.weapon == 0){ //Poings
+            if(player.weapon_state >= 8)
+                player.weapon_state = 0;
+        }
 
     } while(e.type != EVT_NONE);
     
