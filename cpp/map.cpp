@@ -95,7 +95,7 @@ float Map::findWall(Player player, float angle){
     Face f = player.face; //Face dans laquelle se trouve le rayon
     Edge e; //Arête traversée par le rayon
 
-    for(int i = 0; i < int(sqrt(w*w+h*h))/(PAS_RAYCAST)-1; ++i){
+    for(int i = 0; i < sqrt(w*w+h*h)/PAS_RAYCAST; ++i){
 	//On avance le rayon. Au pire on se trouve dans un coin de la map et on regarde vers le coin opposé.
 	//On doit alors voir le mur à l'autre bout de la map se rapprocher quand on avance.
         p.x = p.x + PAS_RAYCAST*cos(angle);
@@ -111,20 +111,20 @@ float Map::findWall(Player player, float angle){
 
         //Si il n'y a rien, on avance, sinon c'est un mur
         if(e.type == 0){
-            
-            int j = -1; //Numéro de la face dans laquelle se trouve p
-
-            for(int i = 0; i < nbFace; ++i)
-                if(fac[i].isInFace(p))
-                    j = i;
-                
-            if(j >= 0 && j < nbFace){ //Si on est toujours dans la map
-                f = fac[j];
-                continue;
-            }
+            if(f.E1.F1 != -1 && fac[f.E1.F1].isInFace(p))
+                f = fac[f.E1.F1];
+            else if(f.E1.F2 != -1 && fac[f.E1.F2].isInFace(p))
+                f = fac[f.E1.F2];
+            else if(f.E2.F1 != -1 && fac[f.E2.F1].isInFace(p))
+                f = fac[f.E2.F1];
+            else if(f.E2.F2 != -1 && fac[f.E2.F2].isInFace(p))
+                f = fac[f.E2.F2];
+            else if(f.E3.F1 != -1 && fac[f.E3.F1].isInFace(p))
+                f = fac[f.E3.F1];
+            else if(f.E3.F2 != -1 && fac[f.E3.F2].isInFace(p))
+                f = fac[f.E3.F2];
             else
-                break; //Si p est sorti de la map, on arrête tout
-            
+                break; //Le point n'est pas dans une face à proximité, il est en dehors de la map
         }
         else
             break; //Si e est un mur, on s'arrête
