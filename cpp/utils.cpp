@@ -87,7 +87,7 @@ bool Edge::sameSide(Point a, Point b){
         test1 = (a.x <= A.x);
         test2 = (b.x <= A.x);
     }
-    return (test1 && test2);
+    return !(test1 xor test2);
 }
 
 bool operator==(Edge a, Edge b)
@@ -120,7 +120,11 @@ void Face::loadPoints(){
         P3 = p2;
     
     //P1 est donc le dernier point
-    P1=(E2.A != p2 || E2.A != p3)?E2.A:E2.B; //x=(test)?1:2 <-> if(test) {x=1;} else {x=2;}
+    if(E2.A != P3)
+        P1 = E2.A;
+    else{
+        P1 = E2.B;
+    }
 }
 
 bool operator==(Face a, Face b)

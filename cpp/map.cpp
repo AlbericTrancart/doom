@@ -63,9 +63,9 @@ Map::Map(string src){ //Map map("test");
                 else
                     edg[result[1]].F1 = result[5];
                 if(!(result[6] >= 0 && result[6] < nbFace))
-                    edg[result[1]].F1 = -1;
+                    edg[result[1]].F2 = -1;
                 else
-                    edg[result[1]].F1 = result[6];
+                    edg[result[1]].F2 = result[6];
                 break;
                 
             case 'F':
@@ -90,15 +90,14 @@ Map::~Map(){
 
 float Map::findWall(Player player, float angle){  
     //On lance le rayon et on passe de face en face jusqu'à ce que l'on se cogne contre un mur
-    bool bang_le_mur = false;
     Point p; //Point courant
     p.x = player.pos.x;
-    p.y = player.pos.y; 
+    p.y = player.pos.y;
     Face f = player.face; //Face sprintante
     Edge e; //Elle aussi va très vite et ne s'arête pas là
-    for(int i = 0; i < 2000; i++){
-        p.x += PAS_RAYCAST*cos(angle);
-        p.y += PAS_RAYCAST*sin(angle);
+    for(int i = 0; i < 10/PAS_RAYCAST; ++i){
+        p.x = p.x + PAS_RAYCAST*cos(angle);
+        p.y = p.y + PAS_RAYCAST*sin(angle);
         if(!f.E1.sameSide(player.pos, p))
             e = f.E1;
         else if(!f.E2.sameSide(player.pos, p))
@@ -107,15 +106,26 @@ float Map::findWall(Player player, float angle){
             e = f.E2;
         else //Sinon on ne traverse pas d'arrête
             continue;
-        
+
         //Si il n'y a rien, on avance, sinon c'est un mur
         if(e.type == 0){
-            f = (f == fac[e.F1])?fac[e.F2]:fac[e.F1];
-            continue;
+            
+            int j = -1;
+            for(int i = 0; i < nbFace; ++i)
+                if(fac[i].isInFace(p))
+                    j = i;
+                
+            if(j >= 0 && j < nbFace){
+                f = fac[j];
+                continue;
+            }
+            else
+                break;
+            
         }
         else
-            return (p-player.pos).norm();
+            break;
     }
-    return INFINITE;
+    return (p-player.pos).norm();
 }
 //--------------------------------------------------------------------//

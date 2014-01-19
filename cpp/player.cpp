@@ -35,10 +35,23 @@ void Player::test_and_move(Point nextpos, Map& map) //Teste si le déplacement e
     //Si test3 est faux, le joueur s'apprête à traverser E3. si ce n'est pas un mur, il le fait
     //Il s'agit du même type de mouvement
 
-    if((test1=false && face.E1.type==0) || (test2=false && face.E2.type==0) || (test3=false && face.E3.type==0)){
+    if((!test1 && face.E1.type == 0) || (!test2 && face.E2.type == 0) || (!test3 && face.E3.type == 0)){
         pos=nextpos; //Le joueur s'apprête à traverser une arête qui n'est pas un mur, RAS, il avance
-        face=map.fac[what_face(map)]; //On réactualise ici la face dans laquelle se trouve maintenant le joueur
+        //On réactualise ici la face dans laquelle se trouve maintenant le joueur
+        if(map.fac[face.E1.F1].isInFace(pos))
+            face = map.fac[face.E1.F1];
+        else if(map.fac[face.E1.F2].isInFace(pos))
+            face = map.fac[face.E1.F2];
+        else if(map.fac[face.E2.F1].isInFace(pos))
+            face = map.fac[face.E2.F1];
+        else if(map.fac[face.E2.F2].isInFace(pos))
+            face = map.fac[face.E2.F2];
+        else if(map.fac[face.E3.F1].isInFace(pos))
+            face = map.fac[face.E3.F1];
+        else if(map.fac[face.E3.F2].isInFace(pos))
+            face = map.fac[face.E3.F2];
     }
+    assert(pos.x >= 0 && pos.x <= map.w && pos.y >= 0 && pos.y <= map.h);
  //Cas où le joueur veut traverser une arête qui est un mur : il ne se passe rien
 }
 
@@ -106,14 +119,12 @@ void Player::turn_right()
 
 int Player::what_face(Map& map)
 {
+    int j = -1;
     for (int i=0; i<map.nbFace; ++i)
-    {
-        if(map.fac[i].isInFace(pos)){ //Si le joueur se trouve dans la ième face du tableau de fac de la map, on retourne l'indice
-            return i;
-        }
-        cout << endl;
-    }
-    return -1;
+        if(map.fac[i].isInFace(pos)) //Si le joueur se trouve dans la ième face du tableau de fac de la map, on retourne l'indice
+            j=i;
+    
+    return j;
 }
 
 //--------------------------------------------------------------------//

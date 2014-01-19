@@ -14,7 +14,7 @@ int main(){
     Image ecran;
     Map map("test"); 
 	Player player(map);
-
+    
     while(endgame != 1){
         handleEvent(endgame, player, map);
         graphics(ecran, player, map);
