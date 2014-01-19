@@ -27,19 +27,19 @@ void handleEvent(int& endgame, Player& player,Map& map){
                         endgame = 3;
                     break;
 
-		case KEY_UP:
+		case 'Z':
 			player.move_up(map);
 			break;
 
-		case KEY_LEFT:
+		case 'Q':
 			player.move_left(map);
 			break;
 
-		case KEY_RIGHT:
+		case 'D':
 			player.move_right(map);
 			break;
 
-		case KEY_DOWN:
+		case 'S':
 			player.move_down(map);
 			break;
         case 'A':
