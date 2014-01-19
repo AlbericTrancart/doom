@@ -7,19 +7,19 @@ using namespace Imagine;
 //#define _USE_MATH_DEFINES
 
 
-//Fenêtre
+//Fenï¿½tre
 const int W = 1300;
 const int H = 700;
 const int A_MINIMAP = 20; //Dimensions de la minimap en %
 
 //Mouvements
-const int PAS = 1; //Pas de déplacement
-const float THETA = 3.14/100; //Pas de rotation
+const float PAS = 0.5; //Pas de dï¿½placement
+const float THETA = 3.14/50; //Pas de rotation
 
 //Graphismes
-const float FOV = 45*3.1415/180; //Field of view à 90
+const float FOV = 45*3.1415/180; //Field of view ï¿½ 90
 const float H_WALLS = 500; //Coefficient de hauteur des murs
-const float INFINITE = 9000*42; //IT'S OVER 9000! /*Il suffit qu'INFINITE dépasse la taille de la map*/
+const float INFINITE = 9000*42; //IT'S OVER 9000! /*Il suffit qu'INFINITE dï¿½passe la taille de la map*/
 const float PAS_RAYCAST = 0.03;
 
 const Color FLOOR(100, 100, 100);
