@@ -7,7 +7,7 @@ void event_move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bo
 	if(key_d) {player.move_right(map);}
 	if(key_s) {player.move_down(map);}
 
-	return;*/ //Semble plus simple. Mais on appelle des fonctions inutilement. Quand il y a Z et S enfoncées on appelle move_down et move_up pour ne rien faire.
+	return;*/ //Semble plus simple. Mais on appelle des fonctions inutilement. Quand il y a Z et S enfoncé on appelle move_down et move_up pour ne rien faire.
 			  //La proposition qui suit me paraît donc plus compliquée mais plus rapide.
 
 	//1 touche est appuyée
@@ -74,19 +74,19 @@ void handleEvent(int& endgame, Player& player,Map& map){
 
 				case 'Z':
 					key_z=true;
-					event_move(player, map, key_z, key_q, key_d, key_s);
+					break;
 
 				case 'Q':
 					key_q=true;
-					event_move(player, map, key_z, key_q, key_d, key_s);
+					break;
 
 				case 'D':
 					key_d=true;
-					event_move(player, map, key_z, key_q, key_d, key_s);
+					break;
 
 				case 'S':
 					key_s=true;
-					event_move(player, map, key_z, key_q, key_d, key_s);
+					break;
 
 				case 'A':
 					player.turn_left();
@@ -129,6 +129,7 @@ void handleEvent(int& endgame, Player& player,Map& map){
             }
         }
 
+		event_move(player, map, key_z, key_q, key_d, key_s);
 
     } while(e.type != EVT_NONE);
     
