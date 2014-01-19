@@ -21,15 +21,15 @@ void minimap(Player player, Map& map){
 	int w=W*A_MINIMAP/100;
 	int h=W*A_MINIMAP/100;
     
-    fillRect(0, 0, w, h, WHITE);
-    fillCircle(player.pos.x*w/map.w, player.pos.y*h/map.h, 3, BLUE);
-    drawLine(player.pos.x*w/map.w, player.pos.y*h/map.h, player.pos.x*w/map.w+int(INFINITE*cos(player.yaw)), player.pos.y*h/map.h+int(INFINITE*sin(player.yaw)), GREEN, 2);
-    drawLine(player.pos.x*w/map.w, player.pos.y*h/map.h, player.pos.x*w/map.w+int(INFINITE*cos(player.yaw-FOV/2)), player.pos.y*h/map.h+int(INFINITE*sin(player.yaw-FOV/2)), GREEN, 2);
-    drawLine(player.pos.x*w/map.w, player.pos.y*h/map.h, player.pos.x*w/map.w+int(INFINITE*cos(player.yaw+FOV/2)), player.pos.y*h/map.h+int(INFINITE*sin(player.yaw+FOV/2)), GREEN, 2);
+    fillRect(0, 0, w, h, FLOOR);
+    fillCircle(player.pos.x*w/map.w, player.pos.y*h/map.h, 3, SKY);
+    drawLine(player.pos.x*w/map.w, player.pos.y*h/map.h, player.pos.x*w/map.w+int(INFINITE*cos(player.yaw)), player.pos.y*h/map.h+int(INFINITE*sin(player.yaw)), BLACK, 2);
+    drawLine(player.pos.x*w/map.w, player.pos.y*h/map.h, player.pos.x*w/map.w+int(INFINITE*cos(player.yaw-FOV/2)), player.pos.y*h/map.h+int(INFINITE*sin(player.yaw-FOV/2)), BLACK, 2);
+    drawLine(player.pos.x*w/map.w, player.pos.y*h/map.h, player.pos.x*w/map.w+int(INFINITE*cos(player.yaw+FOV/2)), player.pos.y*h/map.h+int(INFINITE*sin(player.yaw+FOV/2)), BLACK, 2);
     
     for(int i = 0; i < map.nbEdge; ++i){
         if(map.edg[i].type == 1)
-            drawLine(map.edg[i].A.x*w/map.w, map.edg[i].A.y*h/map.h, map.edg[i].B.x*w/map.w, map.edg[i].B.y*h/map.h, RED, 2);
+            drawLine(map.edg[i].A.x*w/map.w, map.edg[i].A.y*h/map.h, map.edg[i].B.x*w/map.w, map.edg[i].B.y*h/map.h, WALL, 3);
         else
             drawLine(map.edg[i].A.x*w/map.w, map.edg[i].A.y*h/map.h, map.edg[i].B.x*w/map.w, map.edg[i].B.y*h/map.h, BLACK, 1);
     }
