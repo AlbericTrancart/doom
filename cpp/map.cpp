@@ -90,42 +90,45 @@ Map::~Map(){
 
 float Map::findWall(Player player, float angle){  
     //On lance le rayon et on passe de face en face jusqu'à ce que l'on se cogne contre un mur
-    Point p; //Point courant
-    p.x = player.pos.x;
-    p.y = player.pos.y;
-    Face f = player.face; //Face sprintante
-    Edge e; //Elle aussi va très vite et ne s'arête pas là
-    for(int i = 0; i < 10/PAS_RAYCAST; ++i){
+    Point p; //Point où se trouve le rayon
+    p=player.pos;
+    Face f = player.face; //Face dans laquelle se trouve le rayon
+    Edge e; //Arête traversée par le rayon
+
+    for(int i = 0; i < int(sqrt(w*w+h*h))/(PAS_RAYCAST)-1; ++i){
+	//On avance le rayon. Au pire on se trouve dans un coin de la map et on regarde vers le coin opposé.
+	//On doit alors voir le mur à l'autre bout de la map se rapprocher quand on avance.
         p.x = p.x + PAS_RAYCAST*cos(angle);
         p.y = p.y + PAS_RAYCAST*sin(angle);
-        if(!f.E1.sameSide(player.pos, p))
+        if(!f.E1.sameSide(player.pos, p)) //S'il traverse l'arête E1, !sameSide passe à true true
             e = f.E1;
         else if(!f.E2.sameSide(player.pos, p))
             e = f.E2;
         else if(!f.E3.sameSide(player.pos, p))
             e = f.E2;
-        else //Sinon on ne traverse pas d'arrête
+        else //Sinon on ne traverse pas d'arête
             continue;
 
         //Si il n'y a rien, on avance, sinon c'est un mur
         if(e.type == 0){
             
-            int j = -1;
+            int j = -1; //Numéro de la face dans laquelle se trouve p
+
             for(int i = 0; i < nbFace; ++i)
                 if(fac[i].isInFace(p))
                     j = i;
                 
-            if(j >= 0 && j < nbFace){
+            if(j >= 0 && j < nbFace){ //Si on est toujours dans la map
                 f = fac[j];
                 continue;
             }
             else
-                break;
+                break; //Si p est sorti de la map, on arrête tout
             
         }
         else
-            break;
+            break; //Si e est un mur, on s'arrête
     }
-    return (p-player.pos).norm();
+    return (p-player.pos).norm(); //On renvoie la distance entre le joueur et le rayon
 }
 //--------------------------------------------------------------------//
