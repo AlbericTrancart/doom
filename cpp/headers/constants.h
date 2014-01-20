@@ -20,7 +20,7 @@ const float THETA = 3.14/50; //Pas de rotation
 const float FOV = 45*3.1415/180; //Field of view ? 90
 const float H_WALLS = 500; //Coefficient de hauteur des murs
 const float INFINITE = 9000*42; //IT'S OVER 9000! /*Il suffit qu'INFINITE d?passe la taille de la map*/
-const float PAS_RAYCAST = 0.1;
+const float PAS_RAYCAST = 0.05;
 
 const Color FLOOR(100, 100, 100);
 const Color SKY(165, 200, 255);

@@ -10,13 +10,61 @@ Image Wsg1("shotgun/1.png"), Wsg2("shotgun/2.png"), Wsg3("shotgun/3.png"), Wsg4(
 void weapon(Image& img, Player player){
  
     //Pour chaque arme on définit une table avec les différentes images
-    if(player.weapon == 0){
+    if(player.weapon == 1){
         if(player.weapon_state == 0)
             img.addSprite(Wf1, W/2-300, H-150);
         else if(player.weapon_state > 0 && player.weapon_state < 5)
             img.addSprite(Wf2, W/2-300, H-150);
         else if(player.weapon_state >= 5 && player.weapon_state < 8)
             img.addSprite(Wf3, W/2-300, H-150);
+    }
+    if(player.weapon == 2){
+        if(player.weapon_state == 0)
+            img.addSprite(Wg1, W/2-300, H-150);
+        else if(player.weapon_state > 0 && player.weapon_state < 5)
+            img.addSprite(Wg2, W/2-300, H-150);
+        else if(player.weapon_state >= 5 && player.weapon_state < 8)
+            img.addSprite(Wg3, W/2-300, H-150);
+        else if(player.weapon_state >= 8 && player.weapon_state < 12)
+            img.addSprite(Wg4, W/2-300, H-150);
+    }
+    if(player.weapon == 3){
+        if(player.weapon_state == 0)
+            img.addSprite(Wsg1, W/2-300, H-150);
+        else if(player.weapon_state > 0 && player.weapon_state < 5)
+            img.addSprite(Wsg2, W/2-300, H-150);
+        else if(player.weapon_state >= 5 && player.weapon_state < 8)
+            img.addSprite(Wsg3, W/2-300, H-150);
+        else if(player.weapon_state >= 8 && player.weapon_state < 11)
+            img.addSprite(Wsg4, W/2-300, H-150);
+        else if(player.weapon_state >= 11 && player.weapon_state < 14)
+            img.addSprite(Wsg5, W/2-300, H-150);
+        else if(player.weapon_state >= 14 && player.weapon_state < 18)
+            img.addSprite(Wsg6, W/2-300, H-150);
+    }
+    if(player.weapon == 4){
+        if(player.weapon_state == 0)
+            img.addSprite(Wc1, W/2-300, H-150);
+        else if(player.weapon_state > 0 && player.weapon_state < 5)
+            img.addSprite(Wc2, W/2-300, H-150);
+        else if(player.weapon_state >= 5 && player.weapon_state < 8)
+            img.addSprite(Wc3, W/2-300, H-150);
+    }
+    if(player.weapon == 5){
+        if(player.weapon_state == 0)
+            img.addSprite(Wmg1, W/2-300, H-150);
+        else if(player.weapon_state > 0 && player.weapon_state < 5)
+            img.addSprite(Wmg2, W/2-300, H-150);
+        else if(player.weapon_state >= 5 && player.weapon_state < 8)
+            img.addSprite(Wmg3, W/2-300, H-150);
+    }
+    if(player.weapon == 6){
+        if(player.weapon_state == 0)
+            img.addSprite(Wpg1, W/2-300, H-150);
+        else if(player.weapon_state > 0 && player.weapon_state < 5)
+            img.addSprite(Wpg2, W/2-300, H-150);
+        else if(player.weapon_state >= 5 && player.weapon_state < 8)
+            img.addSprite(Wpg3, W/2-300, H-150);
     }
 }
 

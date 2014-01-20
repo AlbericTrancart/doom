@@ -10,7 +10,7 @@ Player::Player(Map& map) //Constructeur
     pos.y=map.h/2;
     yaw=-3.1415/2;
     health=100;
-    weapon=0;
+    weapon=1;
     weapon_state = 0;
     face=map.fac[what_face(map)];
 }

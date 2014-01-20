@@ -1,5 +1,9 @@
 #include "headers/events.h" 
-
+bool key_z=false; //Si Z est appuyé, key_z passe à true
+bool key_d=false; //Si D est appuyé, key_d passe à true
+bool key_s=false; //Si S est appuyé, key_s passe à true
+bool key_q=false; //Si Q est appuyé, key_q passe à true
+    
 void event_move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bool key_s)
 {
 	/*if(key_z) {player.move_up(map);}
@@ -44,11 +48,6 @@ void handleEvent(int& endgame, Player& player,Map& map){
     Event e;
     int key;
 
-	bool key_z=false; //Si Z est appuyé, key_z passe à true
-	bool key_d=false; //Si D est appuyé, key_d passe à true
-	bool key_s=false; //Si S est appuyé, key_s passe à true
-	bool key_q=false; //Si Q est appuyé, key_q passe à true
-
     do{
         getEvent(0,e);
 		cout << "key_z=" << key_z << endl << "key_q=" << key_q << endl << "key_d=" << key_d << endl << "key_s=" << key_s << endl << endl;
@@ -91,10 +90,40 @@ void handleEvent(int& endgame, Player& player,Map& map){
 				case 'A':
 					player.turn_left();
 					break;
+                    
 				case 'E':
 					player.turn_right();
 					break;
+                    
+                case '&':
+                    player.weapon = 1;
+                    player.weapon_state = 0;
+                    break;
+                    
+                case 'é':
+                    player.weapon = 2;
+                    player.weapon_state = 0;
+                    break;
+                
+                case '"':
+                    player.weapon = 3;
+                    player.weapon_state = 0;
+                    break;
+                    
+                case '\'':
+                    player.weapon = 4;
+                    player.weapon_state = 0;
+                    break;
 
+                case '(':
+                    player.weapon = 5;
+                    player.weapon_state = 0;
+                    break;
+                    
+                case '-':
+                    player.weapon = 6;
+                    player.weapon_state = 0;
+                    break;
             }
         }
 
@@ -139,7 +168,27 @@ void handleEvent(int& endgame, Player& player,Map& map){
         if(player.weapon_state != 0) //Si le joueur est en train de tirer on continue de le faire tirer
             ++player.weapon_state;
         //Pour chaque arme on définit un temps de fin de tir
-        if(player.weapon == 0){ //Poings
+        if(player.weapon == 1){ //Poings
+            if(player.weapon_state >= 8)
+                player.weapon_state = 0;
+        }
+        if(player.weapon == 2){ //Carabine
+            if(player.weapon_state >= 12)
+                player.weapon_state = 0;
+        }
+        if(player.weapon == 3){ //Shotgun
+            if(player.weapon_state >= 18)
+                player.weapon_state = 0;
+        }
+        if(player.weapon == 4){ //Poings
+            if(player.weapon_state >= 8)
+                player.weapon_state = 0;
+        }
+        if(player.weapon == 5){ //Poings
+            if(player.weapon_state >= 8)
+                player.weapon_state = 0;
+        }
+        if(player.weapon == 6){ //Poings
             if(player.weapon_state >= 8)
                 player.weapon_state = 0;
         }
