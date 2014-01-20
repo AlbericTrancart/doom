@@ -77,7 +77,7 @@ Map::Map(string src){ //Map map("test");
                 break;
         }
     } while(getline(fichier, line));
-    cout << "Map chargée." << endl;
+    cout << "Map chargee." << endl;
     
     fichier.close();
 }
