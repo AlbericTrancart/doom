@@ -6,7 +6,8 @@ using namespace Imagine;
 #include <cmath>
 //#define _USE_MATH_DEFINES
 
-//Fen?tre
+
+//Fenetre
 const int W = 640;
 const int H = 480;
 const int A_MINIMAP = 20; //Dimensions de la minimap en %
