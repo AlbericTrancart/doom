@@ -2,7 +2,8 @@
 
 Image FLOOR("floor.jpg");
 Image SKY("sky.jpg");
-Image WALL("Style-kitsch-2.jpg");
+//Image WALL("Style-kitsch-2.jpg");
+Image WALL("wall.jpg");
 
 void raycast(Image& img, Player player, Map& map){ //Remplit l'image avec le sol et les murs
     float angle;
