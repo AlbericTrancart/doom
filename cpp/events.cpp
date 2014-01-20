@@ -3,6 +3,7 @@ bool key_z=false; //Si Z est appuyé, key_z passe à true
 bool key_d=false; //Si D est appuyé, key_d passe à true
 bool key_s=false; //Si S est appuyé, key_s passe à true
 bool key_q=false; //Si Q est appuyé, key_q passe à true
+bool mouse_on = false;
     
 void event_move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bool key_s)
 {
@@ -50,7 +51,7 @@ void handleEvent(int& endgame, Player& player,Map& map){
 
     do{
         getEvent(0,e);
-		cout << "key_z=" << key_z << endl << "key_q=" << key_q << endl << "key_d=" << key_d << endl << "key_s=" << key_s << endl << endl;
+
         if(e.type == EVT_KEY_ON){
             switch(e.key){
                 case KEY_ESCAPE:
@@ -100,7 +101,7 @@ void handleEvent(int& endgame, Player& player,Map& map){
                     player.weapon_state = 0;
                     break;
                     
-                case 'é':
+                case 201: // 201 <-> 'é' mais le compilateur veut pas d'accent.
                     player.weapon = 2;
                     player.weapon_state = 0;
                     break;
@@ -158,38 +159,48 @@ void handleEvent(int& endgame, Player& player,Map& map){
             }
         }
         else if(e.type == EVT_BUT_ON){
+            mouse_on = true;
             if(player.weapon_state == 0)
                 ++player.weapon_state;
+        }
+        else if(e.type == EVT_BUT_OFF){
+            mouse_on= false;
         }
 
 		event_move(player, map, key_z, key_q, key_d, key_s);
         
         //Armes
-        if(player.weapon_state != 0) //Si le joueur est en train de tirer on continue de le faire tirer
+        if(player.weapon == 5 && mouse_on) //Machine gun: demande un tri continu
             ++player.weapon_state;
+        else if(player.weapon == 5 && !mouse_on)
+            player.weapon_state = 0;
+        
+        if(player.weapon != 5) //La machine gun réclame un tir different
+            if(player.weapon_state != 0) //Si le joueur est en train de tirer on continue de le faire tirer
+                ++player.weapon_state;
         //Pour chaque arme on définit un temps de fin de tir
         if(player.weapon == 1){ //Poings
             if(player.weapon_state >= 8)
                 player.weapon_state = 0;
         }
-        if(player.weapon == 2){ //Carabine
-            if(player.weapon_state >= 12)
+        if(player.weapon == 2){ //Gun
+            if(player.weapon_state >= 7)
                 player.weapon_state = 0;
         }
         if(player.weapon == 3){ //Shotgun
-            if(player.weapon_state >= 18)
+            if(player.weapon_state >= 14)
                 player.weapon_state = 0;
         }
-        if(player.weapon == 4){ //Poings
-            if(player.weapon_state >= 8)
+        if(player.weapon == 4){ //Carbine
+            if(player.weapon_state >= 15)
                 player.weapon_state = 0;
         }
-        if(player.weapon == 5){ //Poings
-            if(player.weapon_state >= 8)
-                player.weapon_state = 0;
+        if(player.weapon == 5){ //Machine gun
+            if(player.weapon_state >= 13)
+                player.weapon_state = 10;
         }
-        if(player.weapon == 6){ //Poings
-            if(player.weapon_state >= 8)
+        if(player.weapon == 6){ //Plasma gun
+            if(player.weapon_state >= 15)
                 player.weapon_state = 0;
         }
 
