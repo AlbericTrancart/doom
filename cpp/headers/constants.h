@@ -8,8 +8,8 @@ using namespace Imagine;
 
 
 //Fen?tre
-const int W = 1300;
-const int H = 700;
+const int W = 640;
+const int H = 480;
 const int A_MINIMAP = 20; //Dimensions de la minimap en %
 
 //Mouvements

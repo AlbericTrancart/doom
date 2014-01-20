@@ -24,36 +24,37 @@ void Player::test_and_move(Point nextpos, Map& map) //Teste si le déplacement e
     /*"Le point où le joueur est et celui où il s'apprête à aller sont-ils sur la même face?" equivalent à "Le point où le
     joueur est et celui où il s'apprête à aller sont-ils dans le même demi-plan défini par l'arête 1, 2 et 3 ?"*/
 
+    if(nextpos.x < 0 || nextpos.x > map.w || nextpos.y < 0 || nextpos.y > map.h) //Le point est sorti de la map
+        return;
+    
     bool test1=face.E1.sameSide(pos,nextpos);
     bool test2=face.E2.sameSide(pos,nextpos);
     bool test3=face.E3.sameSide(pos,nextpos);
 
     if(test1 && test2 && test3) //Si les trois sont vrais, le joueur ne s'apprête pas à quitter la face
         pos=nextpos; //Le joueur ne s'apprête pas à quitter la face, RAS, il avance
-
-    //Si test1 est faux, le joueur s'apprête à traverser E1. si ce n'est pas un mur, il le fait
-    //Si test2 est faux, le joueur s'apprête à traverser E2. si ce n'est pas un mur, il le fait
-    //Si test3 est faux, le joueur s'apprête à traverser E3. si ce n'est pas un mur, il le fait
-    //Il s'agit du même type de mouvement
-
-    if((!test1 && face.E1.type == 0) || (!test2 && face.E2.type == 0) || (!test3 && face.E3.type == 0)){
-        pos=nextpos; //Le joueur s'apprête à traverser une arête qui n'est pas un mur, RAS, il avance
-        //On réactualise ici la face dans laquelle se trouve maintenant le joueur
-        if(map.fac[face.E1.F1].isInFace(pos))
-            face = map.fac[face.E1.F1];
-        else if(map.fac[face.E1.F2].isInFace(pos))
-            face = map.fac[face.E1.F2];
-        else if(map.fac[face.E2.F1].isInFace(pos))
-            face = map.fac[face.E2.F1];
-        else if(map.fac[face.E2.F2].isInFace(pos))
-            face = map.fac[face.E2.F2];
-        else if(map.fac[face.E3.F1].isInFace(pos))
-            face = map.fac[face.E3.F1];
-        else if(map.fac[face.E3.F2].isInFace(pos))
-            face = map.fac[face.E3.F2];
+    else{
+        //Si test1 est faux, le joueur s'apprête à traverser E1. si ce n'est pas un mur, il le fait
+        //Si test2 est faux, le joueur s'apprête à traverser E2. si ce n'est pas un mur, il le fait
+        //Si test3 est faux, le joueur s'apprête à traverser E3. si ce n'est pas un mur, il le fait
+        //Il s'agit du même type de mouvement
+        if((!test1 && face.E1.type == 0) || (!test2 && face.E2.type == 0) || (!test3 && face.E3.type == 0)){
+            pos=nextpos; //Le joueur s'apprête à traverser une arête qui n'est pas un mur, RAS, il avance
+            //On réactualise ici la face dans laquelle se trouve maintenant le joueur
+            if(map.fac[face.E1.F1].isInFace(pos))
+                face = map.fac[face.E1.F1];
+            else if(map.fac[face.E1.F2].isInFace(pos))
+                face = map.fac[face.E1.F2];
+            else if(map.fac[face.E2.F1].isInFace(pos))
+                face = map.fac[face.E2.F1];
+            else if(map.fac[face.E2.F2].isInFace(pos))
+                face = map.fac[face.E2.F2];
+            else if(map.fac[face.E3.F1].isInFace(pos))
+                face = map.fac[face.E3.F1];
+            else if(map.fac[face.E3.F2].isInFace(pos))
+                face = map.fac[face.E3.F2];
+        }
     }
-    assert(pos.x >= 0 && pos.x <= map.w && pos.y >= 0 && pos.y <= map.h);
- //Cas où le joueur veut traverser une arête qui est un mur : il ne se passe rien
 }
 
 
