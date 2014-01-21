@@ -1,8 +1,9 @@
 #pragma once
-#include <cmath>
+
 #include <Imagine/Graphics.h>
 using namespace Imagine;
 
+#include <cmath>
 #include <iostream>
 using namespace std;
 
