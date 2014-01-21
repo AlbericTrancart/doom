@@ -1,1 +1,0 @@
-/usr/bin/c++   -g    -L"/usr/share/Imagine++/lib" CMakeFiles/editor.dir/main.cpp.o CMakeFiles/editor.dir/__/utils.cpp.o CMakeFiles/editor.dir/__/map.cpp.o  -o editor -rdynamic -lImagineGraphics -lGLU -lGL -lSM -lICE -lX11 -lXext -lQtOpenGL -lQtGui -lQtCore 
