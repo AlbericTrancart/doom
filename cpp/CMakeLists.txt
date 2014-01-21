@@ -4,6 +4,7 @@ FILE(TO_CMAKE_PATH "$ENV{IMAGINEPP_ROOT}" d)
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${d}/CMake")
 FIND_PACKAGE(Imagine)
 
+add_subdirectory(editor)
 ImagineAddExecutable(doom 
 						main.cpp		headers/constants.h
 						player.cpp		headers/player.h

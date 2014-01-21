@@ -1,0 +1,2 @@
+/home/alberic/CPP/doom/doom/build/CMakeFiles/doom.dir
+/home/alberic/CPP/doom/doom/build/editor/CMakeFiles/editor.dir

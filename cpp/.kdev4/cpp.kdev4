@@ -1,5 +1,5 @@
 [Buildset]
-BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00\x08\x00d\x00o\x00o\x00m)
+BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x03\x00\x00\x00\x08\x00d\x00o\x00o\x00m\x00\x00\x00\x0c\x00e\x00d\x00i\x00t\x00o\x00r\x00\x00\x00\x0c\x00e\x00d\x00i\x00t\x00o\x00r)
 
 [CMake]
 Build Directory Count=1
@@ -16,12 +16,12 @@ Extra Arguments=
 Install Directory=file:///usr/local
 
 [Launch]
-Launch Configurations=Launch Configuration 0
+Launch Configurations=Launch Configuration 0,Launch Configuration 1
 
 [Launch][Launch Configuration 0]
 Configured Launch Modes=execute
 Configured Launchers=nativeAppLauncher
-Name=New Application Launcher
+Name=doom
 Type=Native Application
 
 [Launch][Launch Configuration 0][Data]
@@ -33,6 +33,24 @@ Executable=file:///home/alberic/CPP/doom/doom/build/doom
 External Terminal=konsole --noclose --workdir %workdir -e %exe
 Project Target=
 Use External Terminal=false
+Working Directory=
+isExecutable=true
+
+[Launch][Launch Configuration 1]
+Configured Launch Modes=execute
+Configured Launchers=nativeAppLauncher
+Name=editor
+Type=Native Application
+
+[Launch][Launch Configuration 1][Data]
+Arguments=
+Dependencies=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x00)
+Dependency Action=Nothing
+EnvironmentGroup=default
+Executable=file:///home/alberic/CPP/doom/doom/build/editor/editor
+External Terminal=mate-terminal  -e %exe
+Project Target=
+Use External Terminal=true
 Working Directory=
 isExecutable=true
 
