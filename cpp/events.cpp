@@ -177,7 +177,7 @@ void handleEvent(int& endgame, Player& player,Map& map){
                     break;
                     
                 case KEY_SPACE:
-                    sHurt();
+                    sPunchline();
                     break;
             }
         }
