@@ -6,7 +6,7 @@ using namespace std;
 
 #include "../headers/map.h"
 
-bool end, alt, f4;
+bool end_game, alt, f4;
 
 void init(int& w, int& h){
     string choix; 
@@ -31,7 +31,7 @@ int handleEvent(){
         if(e.type == EVT_KEY_ON){
             switch(e.key){
                 case KEY_ESCAPE:
-                    end = true;
+                    end_game = true;
                     break;                    
                 case KEY_ALT:
                     alt = true;
@@ -59,7 +59,7 @@ int handleEvent(){
         }
     } while(e.type != EVT_NONE);
     if(alt && f4)
-        end = true;
+        end_game = true;
     return 0;
 }
 
@@ -67,7 +67,7 @@ int main(){
     int w, h;
     init(w, h);
     
-    while(end){
+    while(end_game){
         handleEvent();
         
         noRefreshBegin();

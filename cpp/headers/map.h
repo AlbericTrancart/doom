@@ -26,5 +26,5 @@ public:
     
     Map(string src);
     ~Map();
-    float findWall(Player player, float angle); //Donne la distance au mur le plus proche map1.findWall(player1,angle)
+    double findWall(Player player, double angle); //Donne la distance au mur le plus proche map1.findWall(player1,angle)
 };

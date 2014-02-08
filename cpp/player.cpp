@@ -6,7 +6,7 @@
 
 Player::Player(Map& map) //Constructeur
 {
-    pos.x=map.w/2;
+    pos.x=2*map.w/3;
     pos.y=map.h/2;
     yaw=-3.1415/2;
     health=100;
@@ -59,44 +59,44 @@ void Player::test_and_move(Point nextpos, Map& map) //Teste si le déplacement e
 
 
 
-void Player::move_left(Map& map)
+void Player::move_left(Map& map, double a) //a multiple du PAS avec lequel en bouge
 {
     Point nextpos; //Point position vers lequel le joueur s'apprête à aller
-    nextpos.x=pos.x+PAS*sin(yaw);
-    nextpos.y=pos.y-PAS*cos(yaw);
+    nextpos.x=pos.x+a*PAS*sin(yaw);
+    nextpos.y=pos.y-a*PAS*cos(yaw);
 
     test_and_move(nextpos,map);
 
     return;
 }
 
-void Player::move_right(Map& map)
+void Player::move_right(Map& map, double a) //a multiple du PAS avec lequel en bouge
 {
     Point nextpos; //Point position vers lequel le joueur s'apprête à aller
-    nextpos.x=pos.x-PAS*sin(yaw);
-    nextpos.y=pos.y+PAS*cos(yaw);
+    nextpos.x=pos.x-a*PAS*sin(yaw);
+    nextpos.y=pos.y+a*PAS*cos(yaw);
 
     test_and_move(nextpos,map);
 
     return;
 }
 
-void Player::move_up(Map& map){
+void Player::move_up(Map& map, double a){ //a multiple du PAS avec lequel en bouge
 
     Point nextpos; //Point position vers lequel le joueur s'apprête à aller
-    nextpos.x=pos.x+PAS*cos(yaw);
-    nextpos.y=pos.y+PAS*sin(yaw);
+    nextpos.x=pos.x+a*PAS*cos(yaw);
+    nextpos.y=pos.y+a*PAS*sin(yaw);
 
     test_and_move(nextpos, map);
 
     return;
 }
 
-void Player::move_down(Map& map)
+void Player::move_down(Map& map, double a) //a multiple du PAS avec lequel en bouge
 {
     Point nextpos; //Point position vers lequel le joueur s'apprête à aller
-    nextpos.x=pos.x-PAS*cos(yaw);
-    nextpos.y=pos.y-PAS*sin(yaw);
+    nextpos.x=pos.x-a*PAS*cos(yaw);
+    nextpos.y=pos.y-a*PAS*sin(yaw);
 
     test_and_move(nextpos,map);
 

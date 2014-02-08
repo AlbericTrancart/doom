@@ -7,5 +7,6 @@ FIND_PACKAGE(Imagine)
 ImagineAddExecutable(editor 
                         main.cpp        ../headers/constants.h
                         ../utils.cpp    ../headers/utils.h
-                        ../map.cpp      ../headers/map.h)
+                        ../map.cpp      ../headers/map.h
+                        editor.cpp      ../headers/editor.h)
 ImagineUseModules(editor Graphics)

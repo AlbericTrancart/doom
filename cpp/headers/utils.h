@@ -18,16 +18,16 @@ class Point
 {
 public:
 
-	float x,y; //champs
+	double x,y; //champs
 
-	Point(float X, float Y);	//constructeur
+	Point(double X, double Y);	//constructeur
 	Point();					//constructeur vide
 
 	Point operator+(Point Q);	//opérateur +
-	float operator*(Point Q);	//produit scalaire
+	double operator*(Point Q);	//produit scalaire
 	Point operator-(Point Q);	//opérateur -
 	
-	float norm(); //norme euclidienne (B-A).norm() donne la norme de AB
+	double norm(); //norme euclidienne (B-A).norm() donne la norme de AB
 	
 };
 
@@ -77,3 +77,6 @@ public:
     void display(); //Afficher l'image
     void addSprite(Image& sprite, int x, int y); //Place une image en x, y en tenant compte de la transparence
 };
+
+void uInitRandom();
+int uRandom(int a, int b);

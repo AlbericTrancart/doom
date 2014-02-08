@@ -1,4 +1,5 @@
 #include "headers/events.h" 
+
 bool key_z=false; //Si Z est appuyé, key_z passe à true
 bool key_d=false; //Si D est appuyé, key_d passe à true
 bool key_s=false; //Si S est appuyé, key_s passe à true
@@ -16,24 +17,24 @@ void event_move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bo
 			  //La proposition qui suit me paraît donc plus compliquée mais plus rapide.
 
 	//1 touche est appuyée
-	if(key_z && !key_q && !key_d && !key_s){player.move_up(map); return;}
-	if(!key_z && key_q && !key_d && !key_s){player.move_left(map); return;}
-	if(!key_z && !key_q && key_d && !key_s){player.move_right(map); return;}
-	if(!key_z && !key_q && !key_d && key_s){player.move_down(map); return;}
+	if(key_z && !key_q && !key_d && !key_s){player.move_up(map,1); return;}
+	if(!key_z && key_q && !key_d && !key_s){player.move_left(map,1); return;}
+	if(!key_z && !key_q && key_d && !key_s){player.move_right(map,1); return;}
+	if(!key_z && !key_q && !key_d && key_s){player.move_down(map,1); return;}
 	//------------------
 	//2 touches sont appuyées
-	if(key_z && key_q && !key_d && !key_s){player.move_up(map);player.move_left(map);return;}
-	if(key_z && !key_q && key_d && !key_s){player.move_up(map);player.move_right(map);return;}
+	if(key_z && key_q && !key_d && !key_s){player.move_up(map,1/sqrt(2));player.move_left(map,1/sqrt(2));return;}
+	if(key_z && !key_q && key_d && !key_s){player.move_up(map,1/sqrt(2));player.move_right(map,1/sqrt(2));return;}
 	if(key_z && !key_q && !key_d && key_s){return;}
 	if(!key_z && key_q && key_d && !key_s){return;}
-	if(!key_z && key_q && !key_d && key_s){player.move_down(map);player.move_left(map);return;}
-	if(!key_z && !key_q && key_d && key_s){player.move_down(map);player.move_right(map);return;}
+	if(!key_z && key_q && !key_d && key_s){player.move_down(map,1/sqrt(2));player.move_left(map,1/sqrt(2));return;}
+	if(!key_z && !key_q && key_d && key_s){player.move_down(map,1/sqrt(2));player.move_right(map,1/sqrt(2));return;}
 	//------------------
 	//3 touches sont appuyées
-	if(key_z && key_q && key_d && !key_s){player.move_up(map); return;}
-	if(key_z && !key_q && key_d && key_s){player.move_right(map); return;}
-	if(key_z && key_q && !key_d && key_s){player.move_left(map); return;}
-	if(!key_z && key_q && key_d && key_s){player.move_down(map); return;}
+	if(key_z && key_q && key_d && !key_s){player.move_up(map,1); return;}
+	if(key_z && !key_q && key_d && key_s){player.move_right(map,1); return;}
+	if(key_z && key_q && !key_d && key_s){player.move_left(map,1); return;}
+	if(!key_z && key_q && key_d && key_s){player.move_down(map,1); return;}
 	//------------------
 	//4 touches sont appuyées
 	if(key_z && key_q && key_d && key_s){return;}
@@ -43,11 +44,55 @@ void event_move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bo
 
 }
 
+//Gère les armes du joueur
+void eWeapons(Player& player){
+    if(player.weapon == 5 && mouse_on) //Machine gun: demande un tir continu
+        ++player.weapon_state;
+    else if(player.weapon == 5 && !mouse_on)
+        player.weapon_state = 0;
+    
+    if(player.weapon != 5) //Toutes les autres armes on un avencement normal
+        if(player.weapon_state != 0) //Si le joueur est en train de tirer on continue de le faire tirer
+            ++player.weapon_state;
+
+    //Pour chaque arme on définit un temps de fin de tir au bout duquel on remet à zero l'arme
+    switch(player.weapon){
+        case 1: //Poings
+        if(player.weapon_state >= 5)
+            player.weapon_state = 0;
+        break;
+    
+        case 2: //Gun
+        if(player.weapon_state >= 5)
+            player.weapon_state = 0;
+        break;
+    
+        case 3: //Shotgun
+        if(player.weapon_state >= 11)
+            player.weapon_state = 0;
+        break;
+    
+        case 4: //Carabine
+        if(player.weapon_state >= 13)
+            player.weapon_state = 0;
+        break;
+    
+        case 5: //Machine gun
+        if(player.weapon_state >= 13)
+            player.weapon_state = 10;
+        break;
+    
+        case 6: //Plasma gun
+        if(player.weapon_state >= 10)
+            player.weapon_state = 0;
+        break;
+    } 
+}
+
 //Gère toutes les combinaisons de touches possibles
 void handleEvent(int& endgame, Player& player,Map& map){
     
     Event e;
-    int key;
 
     do{
         getEvent(0,e);
@@ -101,7 +146,12 @@ void handleEvent(int& endgame, Player& player,Map& map){
                     player.weapon_state = 0;
                     break;
                     
-                case 201: // 201 <-> 'é' mais le compilateur veut pas d'accent.
+                case 201: // 201 <-> 'é' (e accent aigu agencement linux) mais le compilateur veut pas d'accent.
+                    player.weapon = 2;
+                    player.weapon_state = 0;
+                    break;
+
+				case 233: // 233 <-> 'é' (e accent aigu agencement windows) mais le compilateur veut pas d'accent.
                     player.weapon = 2;
                     player.weapon_state = 0;
                     break;
@@ -124,6 +174,10 @@ void handleEvent(int& endgame, Player& player,Map& map){
                 case '-':
                     player.weapon = 6;
                     player.weapon_state = 0;
+                    break;
+                    
+                case KEY_SPACE:
+                    sHurt();
                     break;
             }
         }
@@ -155,56 +209,23 @@ void handleEvent(int& endgame, Player& player,Map& map){
 				case 'S':
 					key_s=false;
 					break;
-
             }
         }
+
+		/*else if(e.type == EVT_MOTION) {}*/
+
         else if(e.type == EVT_BUT_ON){
             mouse_on = true;
-            if(player.weapon_state == 0)
+            if(player.weapon_state == 0){
                 ++player.weapon_state;
+                if(player.weapon != 5)
+                    sWeapon(player.weapon);
+            }
         }
         else if(e.type == EVT_BUT_OFF){
             mouse_on= false;
         }
 
 		event_move(player, map, key_z, key_q, key_d, key_s);
-        
-        //Armes
-        if(player.weapon == 5 && mouse_on) //Machine gun: demande un tri continu
-            ++player.weapon_state;
-        else if(player.weapon == 5 && !mouse_on)
-            player.weapon_state = 0;
-        
-        if(player.weapon != 5) //La machine gun réclame un tir different
-            if(player.weapon_state != 0) //Si le joueur est en train de tirer on continue de le faire tirer
-                ++player.weapon_state;
-        //Pour chaque arme on définit un temps de fin de tir
-        if(player.weapon == 1){ //Poings
-            if(player.weapon_state >= 8)
-                player.weapon_state = 0;
-        }
-        if(player.weapon == 2){ //Gun
-            if(player.weapon_state >= 7)
-                player.weapon_state = 0;
-        }
-        if(player.weapon == 3){ //Shotgun
-            if(player.weapon_state >= 14)
-                player.weapon_state = 0;
-        }
-        if(player.weapon == 4){ //Carbine
-            if(player.weapon_state >= 15)
-                player.weapon_state = 0;
-        }
-        if(player.weapon == 5){ //Machine gun
-            if(player.weapon_state >= 13)
-                player.weapon_state = 10;
-        }
-        if(player.weapon == 6){ //Plasma gun
-            if(player.weapon_state >= 15)
-                player.weapon_state = 0;
-        }
-
     } while(e.type != EVT_NONE);
-    
-
 }

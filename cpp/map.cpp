@@ -3,7 +3,7 @@
 //Utilitaire pour la lecture du fichier: prend une ligne et renvoie dans un array tous les nombres de la ligne dans l'ordre
 //L'index 0 est la position du dernier élément et la recherche commence à partir de la position 1 de la chaine string.
 //Les curseurs prennent comme valeur la position des espaces.
-void getData(string line, float result[7]){ //Prend la première ligne du fichier map et la met dans un string nommé line
+void getData(string line, double result[7]){ //Prend la première ligne du fichier map et la met dans un string nommé line
     int curs1 = 1, curs2;
     int i = 1; //Compteurs: i est le numéro du nombre trouvé
     
@@ -29,7 +29,7 @@ Map::Map(string src){ //Map map("test");
     assert(fichier);
     
     string line;
-    float result[7];
+    double result[7];
     
     getline(fichier, line); //met dans "line" la ligne sous la forme d'un string puis saute une ligne (curseur virtuel)
     getline(fichier, line); //(line est modifié -passé par référence-) à cette ligne propriétés générales de la map
@@ -88,22 +88,22 @@ Map::~Map(){
     delete [] fac; //On supprime, nous Peillon déjà trop cher pour ca
 }
 
-float Map::findWall(Player player, float angle){  
+double Map::findWall(Player player, double angle){  
     //On lance le rayon et on passe de face en face jusqu'à ce que l'on se cogne contre un mur
     Point p; //Point où se trouve le rayon
     p=player.pos;
     Face f = player.face; //Face dans laquelle se trouve le rayon
-    Edge e; //Arête traversée par le rayon
+    Edge e; //Arete traversee par le rayon
 
     for(int i = 0; i < sqrt(w*w+h*h)/PAS_RAYCAST; ++i){
-	//On avance le rayon. Au pire on se trouve dans un coin de la map et on regarde vers le coin opposé.
+	//On avance le rayon. Au pire on se trouve dans un coin de la map et on regarde vers le coin oppose.
 	//On doit alors voir le mur à l'autre bout de la map se rapprocher quand on avance.
         p.x = p.x + PAS_RAYCAST*cos(angle);
         p.y = p.y + PAS_RAYCAST*sin(angle);
-        if(f.isInFace(p)) //Le point n'a pas changé de face
+        if(f.isInFace(p)) //Le point n'a pas change de face
             continue;
         
-        //Sinon on trouve quelle arête il a traversé
+        //Sinon on trouve quelle arete il a traverse
         if(p.x < 0 || p.x > w || p.y < 0 || p.y > h) //Le point est sorti de la map
             break;
         
@@ -127,4 +127,3 @@ float Map::findWall(Player player, float angle){
     }
     return (p-player.pos).norm(); //On renvoie la distance entre le joueur et le rayon
 }
-//--------------------------------------------------------------------//
