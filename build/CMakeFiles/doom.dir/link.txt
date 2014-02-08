@@ -1,1 +1,0 @@
-/usr/bin/c++   -g    -L"/usr/share/Imagine++/lib" CMakeFiles/doom.dir/main.cpp.o CMakeFiles/doom.dir/player.cpp.o CMakeFiles/doom.dir/utils.cpp.o CMakeFiles/doom.dir/events.cpp.o CMakeFiles/doom.dir/graphics.cpp.o CMakeFiles/doom.dir/hud.cpp.o CMakeFiles/doom.dir/map.cpp.o  -o doom -rdynamic -lImagineGraphics -lGLU -lGL -lSM -lICE -lX11 -lXext -lQtOpenGL -lQtGui -lQtCore 
