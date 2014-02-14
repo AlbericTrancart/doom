@@ -8,7 +8,7 @@ Player::Player(Map& map) //Constructeur
 {
     pos.x=2*map.w/3;
     pos.y=map.h/2;
-    yaw=-3.1415/2;
+    yaw=-M_PI/2;
     health=100;
     weapon=1;
     weapon_state = 0;
@@ -106,15 +106,15 @@ void Player::move_down(Map& map, double a) //a multiple du PAS avec lequel en bo
 
 
 //--------------------------------------------------------------------//
-void Player::turn_left()
+void Player::turn_left(double a)
 {
-    yaw=yaw-THETA;
+    yaw=yaw-a*THETA;
     return;
 }
 
-void Player::turn_right()
+void Player::turn_right(double a)
 {
-    yaw=yaw+THETA;
+    yaw=yaw+a*THETA;
     return;
 }
 //--------------------------------------------------------------------//
@@ -127,6 +127,16 @@ int Player::what_face(Map& map)
             j=i;
     
     return j;
+}
+
+
+void Player::motion(double e0, double e1){
+
+	if(e0-e1>0)
+		turn_left();
+
+	if(e0-e1<0)
+		turn_right();
 }
 
 //--------------------------------------------------------------------//
