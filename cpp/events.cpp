@@ -5,6 +5,8 @@ bool key_d=false; //Si D est appuyé, key_d passe à true
 bool key_s=false; //Si S est appuyé, key_s passe à true
 bool key_q=false; //Si Q est appuyé, key_q passe à true
 bool mouse_on = false;
+double e0=W/2; //(e0-e1) Représente la différence entre la coordonnée x de la position de la souris à un instant n et celle à l'instant n+1
+double e1=W/2; //Si le joueur déplace sa souris vers la gauche, cette différence est positive et le joueur tourne à gauche
     
 void event_move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bool key_s)
 {
@@ -17,10 +19,10 @@ void event_move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bo
 			  //La proposition qui suit me paraît donc plus compliquée mais plus rapide.
 
 	//1 touche est appuyée
-	if(key_z && !key_q && !key_d && !key_s){player.move_up(map,1); return;}
-	if(!key_z && key_q && !key_d && !key_s){player.move_left(map,1); return;}
-	if(!key_z && !key_q && key_d && !key_s){player.move_right(map,1); return;}
-	if(!key_z && !key_q && !key_d && key_s){player.move_down(map,1); return;}
+	if(key_z && !key_q && !key_d && !key_s){player.move_up(map); return;}
+	if(!key_z && key_q && !key_d && !key_s){player.move_left(map); return;}
+	if(!key_z && !key_q && key_d && !key_s){player.move_right(map); return;}
+	if(!key_z && !key_q && !key_d && key_s){player.move_down(map); return;}
 	//------------------
 	//2 touches sont appuyées
 	if(key_z && key_q && !key_d && !key_s){player.move_up(map,1/sqrt(2));player.move_left(map,1/sqrt(2));return;}
@@ -31,10 +33,10 @@ void event_move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bo
 	if(!key_z && !key_q && key_d && key_s){player.move_down(map,1/sqrt(2));player.move_right(map,1/sqrt(2));return;}
 	//------------------
 	//3 touches sont appuyées
-	if(key_z && key_q && key_d && !key_s){player.move_up(map,1); return;}
-	if(key_z && !key_q && key_d && key_s){player.move_right(map,1); return;}
-	if(key_z && key_q && !key_d && key_s){player.move_left(map,1); return;}
-	if(!key_z && key_q && key_d && key_s){player.move_down(map,1); return;}
+	if(key_z && key_q && key_d && !key_s){player.move_up(map); return;}
+	if(key_z && !key_q && key_d && key_s){player.move_right(map); return;}
+	if(key_z && key_q && !key_d && key_s){player.move_left(map); return;}
+	if(!key_z && key_q && key_d && key_s){player.move_down(map); return;}
 	//------------------
 	//4 touches sont appuyées
 	if(key_z && key_q && key_d && key_s){return;}
@@ -212,9 +214,17 @@ void handleEvent(int& endgame, Player& player,Map& map){
             }
         }
 
-		/*else if(e.type == EVT_MOTION) {}*/
+		if(e.type == EVT_MOTION) {
 
-        else if(e.type == EVT_BUT_ON){
+			e0=e1;
+			e1=e.pix[0];
+
+			player.motion(e0, e1);
+
+		}
+			
+
+        if(e.type == EVT_BUT_ON){
             mouse_on = true;
             if(player.weapon_state == 0){
                 ++player.weapon_state;
@@ -222,10 +232,12 @@ void handleEvent(int& endgame, Player& player,Map& map){
                     sWeapon(player.weapon);
             }
         }
-        else if(e.type == EVT_BUT_OFF){
+        
+		if(e.type == EVT_BUT_OFF){
             mouse_on= false;
         }
 
 		event_move(player, map, key_z, key_q, key_d, key_s);
+
     } while(e.type != EVT_NONE);
 }
