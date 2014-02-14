@@ -8,7 +8,6 @@ using namespace std;
 #include <Imagine/Graphics.h>
 using namespace Imagine;
 
-#include <SDL/SDL.h>
 #include <SDL/SDL_mixer.h>
 
 //Fenetre
@@ -17,7 +16,7 @@ const int H = 480;
 const int A_MINIMAP = 20; //Dimensions de la minimap en %
 
 //Mouvements
-const double PAS = 0.5; //Pas de deplacement
+const double PAS = 0.3; //Pas de deplacement
 const double THETA = M_PI/80; //Pas de rotation
 
 //Graphismes
