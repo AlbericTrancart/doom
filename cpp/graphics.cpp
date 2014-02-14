@@ -4,6 +4,8 @@ Image FLOOR("floor.jpg");
 Image SKY("sky.jpg");
 Image WALL("wall.jpg");
 
+Image sight1("sight/sight1.png");
+
 void raycast(Image& img, Player player, Map& map){ //Remplit l'image avec le sol et les murs
     double angle;
     double height; //Hauteur du mur
@@ -48,7 +50,13 @@ void minimap(Player player, Map& map){
     }
 }
 
+void sight(Image& img, Player player){
+	img.addSprite(sight1,W/2-sight1.w/2,H/2-sight1.h/2+30);
+}
+
+
 void graphics(Image& img, Player player, Map& map){
     raycast(img, player, map);
     hud(img, player);
+	sight(img,player);
 }
