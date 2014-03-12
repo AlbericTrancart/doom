@@ -1,46 +1,43 @@
 #include "headers/events.h" 
 
-bool key_z=false; //Si Z est appuyé, key_z passe à true
-bool key_d=false; //Si D est appuyé, key_d passe à true
-bool key_s=false; //Si S est appuyé, key_s passe à true
-bool key_q=false; //Si Q est appuyé, key_q passe à true
+//Si la touche reste appuyée, passe à true. Repasse à false quand le bouton est relâché.
+bool key_z = false;
+bool key_d = false;
+bool key_s = false;
+bool key_q = false;
 bool mouse_on = false;
-double e0=W/2; //(e0-e1) Représente la différence entre la coordonnée x de la position de la souris à un instant n et celle à l'instant n+1
-double e1=W/2; //Si le joueur déplace sa souris vers la gauche, cette différence est positive et le joueur tourne à gauche
-    
-void event_move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bool key_s)
-{
-	/*if(key_z) {player.move_up(map);}
-	if(key_q) {player.move_left(map);}
-	if(key_d) {player.move_right(map);}
-	if(key_s) {player.move_down(map);}
 
-	return;*/ //Semble plus simple. Mais on appelle des fonctions inutilement. Quand il y a Z et S enfoncé on appelle move_down et move_up pour ne rien faire.
-			  //La proposition qui suit me paraît donc plus compliquée mais plus rapide.
+//(e0-e1) Représente la différence entre la coordonnée x de la position de la souris à un instant n et celle à l'instant n+1
+double e0 = W/2; 
+double e1 = W/2;
+    
+void move(Player& player, Map& map, bool key_z, bool key_q, bool key_d, bool key_s)
+{
+	//Avec un système touche => mouvement, quand on appuie sur deux touches opposées, on appelle des fonctions inutilement.
+    //Ce système est plus compliqué mais évite des opérations coûteuses (calcul de la distance au mur le plus proche)
 
 	//1 touche est appuyée
-	if(key_z && !key_q && !key_d && !key_s){player.move_up(map); return;}
-	if(!key_z && key_q && !key_d && !key_s){player.move_left(map); return;}
-	if(!key_z && !key_q && key_d && !key_s){player.move_right(map); return;}
-	if(!key_z && !key_q && !key_d && key_s){player.move_down(map); return;}
-	//------------------
+	if(key_z && !key_q && !key_d && !key_s){player.moveUp(map); return;}
+	if(!key_z && key_q && !key_d && !key_s){player.moveLeft(map); return;}
+	if(!key_z && !key_q && key_d && !key_s){player.moveRight(map); return;}
+	if(!key_z && !key_q && !key_d && key_s){player.moveDown(map); return;}
+	
 	//2 touches sont appuyées
-	if(key_z && key_q && !key_d && !key_s){player.move_up(map,1/sqrt(2));player.move_left(map,1/sqrt(2));return;}
-	if(key_z && !key_q && key_d && !key_s){player.move_up(map,1/sqrt(2));player.move_right(map,1/sqrt(2));return;}
+	if(key_z && key_q && !key_d && !key_s){player.moveUp(map,1/sqrt(2));player.moveLeft(map,1/sqrt(2));return;}
+	if(key_z && !key_q && key_d && !key_s){player.moveUp(map,1/sqrt(2));player.moveRight(map,1/sqrt(2));return;}
 	if(key_z && !key_q && !key_d && key_s){return;}
 	if(!key_z && key_q && key_d && !key_s){return;}
-	if(!key_z && key_q && !key_d && key_s){player.move_down(map,1/sqrt(2));player.move_left(map,1/sqrt(2));return;}
-	if(!key_z && !key_q && key_d && key_s){player.move_down(map,1/sqrt(2));player.move_right(map,1/sqrt(2));return;}
-	//------------------
+	if(!key_z && key_q && !key_d && key_s){player.moveDown(map,1/sqrt(2));player.moveLeft(map,1/sqrt(2));return;}
+	if(!key_z && !key_q && key_d && key_s){player.moveDown(map,1/sqrt(2));player.moveRight(map,1/sqrt(2));return;}
+	
 	//3 touches sont appuyées
-	if(key_z && key_q && key_d && !key_s){player.move_up(map); return;}
-	if(key_z && !key_q && key_d && key_s){player.move_right(map); return;}
-	if(key_z && key_q && !key_d && key_s){player.move_left(map); return;}
-	if(!key_z && key_q && key_d && key_s){player.move_down(map); return;}
-	//------------------
+	if(key_z && key_q && key_d && !key_s){player.moveUp(map); return;}
+	if(key_z && !key_q && key_d && key_s){player.moveRight(map); return;}
+	if(key_z && key_q && !key_d && key_s){player.moveLeft(map); return;}
+	if(!key_z && key_q && key_d && key_s){player.moveDown(map); return;}
+	
 	//4 touches sont appuyées
 	if(key_z && key_q && key_d && key_s){return;}
-	//------------------
 
 	return; //Aucune touche n'est appuyée
 
@@ -53,7 +50,7 @@ void eWeapons(Player& player){
     else if(player.weapon == 5 && !mouse_on)
         player.weapon_state = 0;
     
-    if(player.weapon != 5) //Toutes les autres armes on un avencement normal
+    if(player.weapon != 5) //Toutes les autres armes on un avencement normal sauf la machine gun
         if(player.weapon_state != 0) //Si le joueur est en train de tirer on continue de le faire tirer
             ++player.weapon_state;
 
@@ -92,8 +89,7 @@ void eWeapons(Player& player){
 }
 
 //Gère toutes les combinaisons de touches possibles
-void handleEvent(int& endgame, Player& player,Map& map){
-    
+void eHandle(int& endgame, Player& player,Map& map){
     Event e;
 
     do{
@@ -120,27 +116,27 @@ void handleEvent(int& endgame, Player& player,Map& map){
                     break;
 
 				case 'Z':
-					key_z=true;
+					key_z = true;
 					break;
 
 				case 'Q':
-					key_q=true;
+					key_q = true;
 					break;
 
 				case 'D':
-					key_d=true;
+					key_d = true;
 					break;
 
 				case 'S':
-					key_s=true;
+					key_s = true;
 					break;
 
 				case 'A':
-					player.turn_left();
+					player.turnLeft();
 					break;
                     
 				case 'E':
-					player.turn_right();
+					player.turnRight();
 					break;
                     
                 case '&':
@@ -195,32 +191,27 @@ void handleEvent(int& endgame, Player& player,Map& map){
                     break;
 
 				case 'Z':
-					key_z=false;
+					key_z = false;
 					break;
 
 				case 'Q':
-					key_q=false;
+					key_q = false;
 					break;
-
 
 				case 'D':
-					key_d=false;
+					key_d = false;
 					break;
 
-
 				case 'S':
-					key_s=false;
+					key_s = false;
 					break;
             }
         }
 
 		if(e.type == EVT_MOTION) {
-
-			e0=e1;
-			e1=e.pix[0];
-
+			e0 = e1;
+			e1 = e.pix[0];
 			player.motion(e0, e1);
-
 		}
 			
 
@@ -234,10 +225,10 @@ void handleEvent(int& endgame, Player& player,Map& map){
         }
         
 		if(e.type == EVT_BUT_OFF){
-            mouse_on= false;
+            mouse_on = false;
         }
 
-		event_move(player, map, key_z, key_q, key_d, key_s);
+		move(player, map, key_z, key_q, key_d, key_s);
 
     } while(e.type != EVT_NONE);
 }

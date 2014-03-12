@@ -1,143 +1,90 @@
 #include "headers/player.h"
 
-//***CLASS PLAYER DEFINITIONS***//
-
-//--------------------------------------------------------------------//
-
 Player::Player(Map& map) //Constructeur
 {
-    pos.x=2*map.w/3;
-    pos.y=map.h/2;
-    yaw=-M_PI/2;
-    health=100;
-    weapon=1;
+	pos = Point(2*map.w/3,map.h/2);
+    yaw = -M_PI/2;
+    health = 100;
+    weapon = 1;
     weapon_state = 0;
-    face=map.fac[what_face(map)];
+    face = map.fac[whatFace(map)];
 }
 
-//--------------------------------------------------------------------//
-
-
-//--------------------------------------------------------------------//
-void Player::test_and_move(Point nextpos, Map& map) //Teste si le déplacement est possible dans la map, et l'effectue si c'est le cas
+//Fonctions de mouvement
+void Player::testAndMove(Point nextpos, Map& map) //Teste si le déplacement est possible dans la map, et l'effectue si c'est le cas
 {
-    /*"Le point où le joueur est et celui où il s'apprête à aller sont-ils sur la même face?" equivalent à "Le point où le
-    joueur est et celui où il s'apprête à aller sont-ils dans le même demi-plan défini par l'arête 1, 2 et 3 ?"*/
+    //Le point est sorti de la map
+    if(nextpos.x < 0 || nextpos.x > map.w || nextpos.y < 0 || nextpos.y > map.h) 
+		return;
 
-    if(nextpos.x < 0 || nextpos.x > map.w || nextpos.y < 0 || nextpos.y > map.h) //Le point est sorti de la map
+    //Si la distance au prochain point est plus petite que la distance au mur le plus proche
+	if(map.findWall(*this, asin(((nextpos-pos).y/((nextpos-pos).norm())))) > (nextpos-pos).norm())
+		pos=nextpos;
+	else
         return;
-    
-    bool test1=face.E1.sameSide(pos,nextpos);
-    bool test2=face.E2.sameSide(pos,nextpos);
-    bool test3=face.E3.sameSide(pos,nextpos);
 
-    if(test1 && test2 && test3) //Si les trois sont vrais, le joueur ne s'apprête pas à quitter la face
-        pos=nextpos; //Le joueur ne s'apprête pas à quitter la face, RAS, il avance
-    else{
-        //Si test1 est faux, le joueur s'apprête à traverser E1. si ce n'est pas un mur, il le fait
-        //Si test2 est faux, le joueur s'apprête à traverser E2. si ce n'est pas un mur, il le fait
-        //Si test3 est faux, le joueur s'apprête à traverser E3. si ce n'est pas un mur, il le fait
-        //Il s'agit du même type de mouvement
-        if((!test1 && face.E1.type == 0) || (!test2 && face.E2.type == 0) || (!test3 && face.E3.type == 0)){
-            pos=nextpos; //Le joueur s'apprête à traverser une arête qui n'est pas un mur, RAS, il avance
-            //On réactualise ici la face dans laquelle se trouve maintenant le joueur
-            if(map.fac[face.E1.F1].isInFace(pos))
-                face = map.fac[face.E1.F1];
-            else if(map.fac[face.E1.F2].isInFace(pos))
-                face = map.fac[face.E1.F2];
-            else if(map.fac[face.E2.F1].isInFace(pos))
-                face = map.fac[face.E2.F1];
-            else if(map.fac[face.E2.F2].isInFace(pos))
-                face = map.fac[face.E2.F2];
-            else if(map.fac[face.E3.F1].isInFace(pos))
-                face = map.fac[face.E3.F1];
-            else if(map.fac[face.E3.F2].isInFace(pos))
-                face = map.fac[face.E3.F2];
-        }
-    }
+	//On réactualise ici la face dans laquelle se trouve maintenant le joueur
+	face=map.fac[whatFace(map)];
 }
 
-
-
-void Player::move_left(Map& map, double a) //a multiple du PAS avec lequel en bouge
+//Commandes utilisées par event.cpp
+//a multiple du PAS avec lequel en bouge
+void Player::moveLeft(Map& map, double a)
 {
-    Point nextpos; //Point position vers lequel le joueur s'apprête à aller
-    nextpos.x=pos.x+a*PAS*sin(yaw);
-    nextpos.y=pos.y-a*PAS*cos(yaw);
-
-    test_and_move(nextpos,map);
-
+    Point nextpos(pos.x+a*PAS*sin(yaw), pos.y-a*PAS*cos(yaw));
+    testAndMove(nextpos, map);
     return;
 }
 
-void Player::move_right(Map& map, double a) //a multiple du PAS avec lequel en bouge
+void Player::moveRight(Map& map, double a)
 {
-    Point nextpos; //Point position vers lequel le joueur s'apprête à aller
-    nextpos.x=pos.x-a*PAS*sin(yaw);
-    nextpos.y=pos.y+a*PAS*cos(yaw);
-
-    test_and_move(nextpos,map);
-
+    Point nextpos(pos.x-a*PAS*sin(yaw), pos.y+a*PAS*cos(yaw));
+    testAndMove(nextpos, map);
     return;
 }
 
-void Player::move_up(Map& map, double a){ //a multiple du PAS avec lequel en bouge
-
-    Point nextpos; //Point position vers lequel le joueur s'apprête à aller
-    nextpos.x=pos.x+a*PAS*cos(yaw);
-    nextpos.y=pos.y+a*PAS*sin(yaw);
-
-    test_and_move(nextpos, map);
-
+void Player::moveUp(Map& map, double a)
+{
+    Point nextpos(pos.x+a*PAS*cos(yaw), pos.y+a*PAS*sin(yaw)); //Point position vers lequel le joueur s'apprête à aller
+    testAndMove(nextpos, map);
     return;
 }
 
-void Player::move_down(Map& map, double a) //a multiple du PAS avec lequel en bouge
+void Player::moveDown(Map& map, double a) //a multiple du PAS avec lequel en bouge
 {
-    Point nextpos; //Point position vers lequel le joueur s'apprête à aller
-    nextpos.x=pos.x-a*PAS*cos(yaw);
-    nextpos.y=pos.y-a*PAS*sin(yaw);
-
-    test_and_move(nextpos,map);
-
-    return;
-}
-//--------------------------------------------------------------------//
-
-
-//--------------------------------------------------------------------//
-void Player::turn_left(double a)
-{
-    yaw=yaw-a*THETA;
+    Point nextpos(pos.x-a*PAS*cos(yaw), pos.y-a*PAS*sin(yaw));
+    testAndMove(nextpos, map);
     return;
 }
 
-void Player::turn_right(double a)
+void Player::turnLeft(double a)
 {
-    yaw=yaw+a*THETA;
+    yaw -= a*THETA;
     return;
 }
-//--------------------------------------------------------------------//
 
-int Player::what_face(Map& map)
+void Player::turnRight(double a)
 {
-    int j = -1;
-    for (int i=0; i<map.nbFace; ++i)
+    yaw += a*THETA;
+    return;
+}
+
+//Actualise la face dans laquelle est le joueur
+int Player::whatFace(Map& map)
+{
+    for(int i = 0; i < map.nbFace; ++i){
         if(map.fac[i].isInFace(pos)) //Si le joueur se trouve dans la ième face du tableau de fac de la map, on retourne l'indice
-            j=i;
-    
-    return j;
+            return i;
+    }
+    return -1;
 }
 
-
-void Player::motion(double e0, double e1){
-
+//Déplacement du viseur à la souris
+void Player::motion(double e0, double e1)
+{
 	if(e0-e1>0)
-		turn_left();
+		turnLeft();
 
 	if(e0-e1<0)
-		turn_right();
+		turnRight();
 }
-
-//--------------------------------------------------------------------//
-    

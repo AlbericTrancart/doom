@@ -63,7 +63,7 @@ void weapon(Image& img, Player player){
             img.addSprite(Wmg1, W/2-300, H-150);
         else if(player.weapon_state >= 10 && player.weapon_state < 11){
             img.addSprite(Wmg2, W/2-300, H-150);
-            sWeapon(5);
+            sWeapon(5); //La gestion du son doit se faire en continu
         }
         else if(player.weapon_state >= 11 && player.weapon_state < 12){
             img.addSprite(Wmg3, W/2-300, H-150);
@@ -86,6 +86,12 @@ void weapon(Image& img, Player player){
     }
 }
 
-void hud(Image& img, Player player){
+Image cursorimg("cursor/cursor.png");
+void cursor(Image& img, Player& player){
+    img.addSprite(cursorimg, W/2-cursorimg.w/2, H/2-cursorimg.h/2+30);
+}
+
+void hHud(Image& img, Player player){
     weapon(img, player);
+    cursor(img,player);
 }

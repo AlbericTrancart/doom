@@ -4,9 +4,8 @@ Image FLOOR("floor.jpg");
 Image SKY("sky.jpg");
 Image WALL("wall.jpg");
 
-Image sight1("sight/sight1.png");
+void raycast(Image& img, Player &player, Map& map){ //Remplit l'image avec le sol et les murs
 
-void raycast(Image& img, Player player, Map& map){ //Remplit l'image avec le sol et les murs
     double angle;
     double height; //Hauteur du mur
 
@@ -18,7 +17,9 @@ void raycast(Image& img, Player player, Map& map){ //Remplit l'image avec le sol
         height = H_WALLS/dist;
         
         for(int i = 0; i < max(0, int(H/2-height/2)); ++i)
-            img.set(i, j, SKY.get(i%SKY.h,j%SKY.w));
+		{
+				img.set(i, j, SKY.get(i%SKY.h,j%SKY.w));
+		}
 
         for(int i = max(0, int(H/2-height/2)); i < min(int(H/2+height/2), H); ++i)
 		{
@@ -31,13 +32,18 @@ void raycast(Image& img, Player player, Map& map){ //Remplit l'image avec le sol
     }
 }
 
-void minimap(Player player, Map& map){
+void gMinimap(Player &player, Map& map, Chicken chicken[]){
 
 	int w=W*A_MINIMAP/100;
 	int h=W*A_MINIMAP/100;
     
     fillRect(0, 0, w, h, FLOOR_DEBUG);
     fillCircle(int(player.pos.x*w/map.w), int(player.pos.y*h/map.h), 3, SKY_DEBUG);
+    
+    for(int i=0; i<NB_CHICKEN; ++i){
+        fillCircle(int(chicken[i].pos.x*w/map.w), int(chicken[i].pos.y*h/map.h), 3, RED);
+    }
+    
     drawLine(int(player.pos.x*w/map.w), int(player.pos.y*h/map.h), int(player.pos.x*w/map.w+int(INFINITE*cos(player.yaw))), int(player.pos.y*h/map.h+int(INFINITE*sin(player.yaw))), BLACK, 2);
     drawLine(int(player.pos.x*w/map.w), int(player.pos.y*h/map.h), int(player.pos.x*w/map.w+int(INFINITE*cos(player.yaw-FOV/2))), int(player.pos.y*h/map.h+int(INFINITE*sin(player.yaw-FOV/2))), BLACK, 2);
     drawLine(int(player.pos.x*w/map.w), int(player.pos.y*h/map.h), int(player.pos.x*w/map.w+int(INFINITE*cos(player.yaw+FOV/2))), int(player.pos.y*h/map.h+int(INFINITE*sin(player.yaw+FOV/2))), BLACK, 2);
@@ -50,13 +56,7 @@ void minimap(Player player, Map& map){
     }
 }
 
-void sight(Image& img, Player player){
-	img.addSprite(sight1,W/2-sight1.w/2,H/2-sight1.h/2+30);
-}
-
-
-void graphics(Image& img, Player player, Map& map){
+void gGraphics(Image& img, Player& player, Map& map){
     raycast(img, player, map);
-    hud(img, player);
-	sight(img,player);
+    hHud(img, player);
 }

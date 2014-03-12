@@ -3,4 +3,4 @@
 #include "player.h"
 #include "sound.h"
 
-void hud(Image& img, Player player);
+void hHud(Image& img, Player player);
