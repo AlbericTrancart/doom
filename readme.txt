@@ -1,1 +1,1 @@
-A simple C++ project demonstrating the raycasting method.
+A simple C++ project (a Doom-like game) demonstrating the raycasting method.
